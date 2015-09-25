@@ -35,43 +35,12 @@ echo 'Upgrading pip...'
 echo ''
 pip install --upgrade pip
 
-# gaenv -h >/dev/null 2>&1 || {
-#     echo ''
-#     echo "It looks like gaenv isn't installed - installing it now..."
-#     pip install gaenv
-# }
-
-# if [ -d $APP_DIR/vendor ]; then
-#     echo ''
-#     echo "Vendor folder exists at $APP_DIR/vendor, moving on..."
-#     echo ''
-# else
-#     echo ''
-#     echo 'Creating vendor folder...'
-#     echo ''
-#     mkdir $APP_DIR/vendor
-# fi
-
 if [ -f $PROJECT_DIR/requirements.txt ]; then
     echo ''
     echo 'Installing requirements'
     echo ''
     pip install -r $PROJECT_DIR/requirements.txt
 fi
-
-# echo ''
-# echo 'Symlink venv libraries to /vendor'
-# echo ''
-#
-# # -n=1 means nothing, should just be -n, but requires an arguement. Weird bug
-# gaenv --lib $APP_DIR/vendor -n=1
-
-# echo ''
-# echo 'Freeze requirements'
-# echo ''
-#
-# pip freeze > $PROJECT_DIR/requirements.txt
-
 
 python $SCRIPTS_DIR/cli.py
 

@@ -1,13 +1,21 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="utf-8">
-        <title>Admin</title>
-    </head>
-    <body>
-        <h1>Admin</h1>
-        <p>
-            Welcome to the admin page!
-        </p>
-    </body>
-</html>
+{% extends "base_admin.html" %}
+
+{% block content %}
+
+    <h1>Admin</h1>
+    {% for user in users %}
+    <p>
+        {{user.email}}
+    </p>
+    {% empty %}
+    <p>
+        No users
+    </p>
+    {% endfor %}
+
+    <form class="" action="." method="post">
+        <input type="email" name="email" placeholder="user email here">
+        <button type="submit" name="button">Add user</button>
+    </form>
+
+{% endblock %}

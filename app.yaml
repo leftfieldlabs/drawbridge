@@ -13,7 +13,7 @@ libraries:
 
 handlers:
 
-- url: /admin/.*
+- url: /.*
   script: app.main.app
   secure: always
   login: required
@@ -39,4 +39,3 @@ skip_files:
 - ^script/.*
 - ^utils/.*
 - ^node_modules/.*
-

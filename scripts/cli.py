@@ -20,10 +20,15 @@ libraries:
 
 handlers:
 
-- url: /admin/.*
+- url: /
   script: app.main.app
   secure: always
   login: required
+
+- url: /admin/.*
+  script: app.main.app
+  secure: always
+  login: admin
 
 skip_files:
 - ^(.*/)?#.*#

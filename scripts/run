@@ -5,33 +5,6 @@ SCRIPTS_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 PROJECT_DIR=$( cd $SCRIPTS_DIR && cd .. && pwd )
 APP_DIR=$( cd $PROJECT_DIR/app && pwd )
 
-# if [ -z "$1"  ]; then
-#     echo "No environment supplied. Exiting.."; exit 1;
-# fi
-
-# Check if file exists
-# if [ -f "$PROJECT_DIR/projection/conf/constants_$1.py" ]; then
-#     echo ''
-#     echo 'Building constants file from env'
-#     echo ''
-#
-#     # Delete original constants
-#     rm -f $PROJECT_DIR/projection/conf/constants.py
-#
-#     # Build new constants.py
-#     cp $PROJECT_DIR/projection/conf/constants_$1.py $PROJECT_DIR/projection/conf/constants.py
-#
-#     # Display constants.py file
-#     echo 'Rendered constants.py file:'
-#     echo ''
-#     echo '--------------------------------------------------------------------------------'
-#     cat $PROJECT_DIR/projection/conf/constants.py
-#     echo '--------------------------------------------------------------------------------'
-# else
-#     echo "constants_$1.py does not exist, exiting. Please make sure appropriate"
-#     echo "constants file exists in projection/conf"; exit 1;
-# fi
-
 if [ -f "$PROJECT_DIR/app.yaml" ]; then
     echo ''
     echo 'Found app.yaml, starting server...'
