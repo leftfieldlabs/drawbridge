@@ -15,13 +15,13 @@ def requires_auth(f):
     def wrapper(self, *args, **kwargs):
         user = users.get_current_user()
         if not user:
-            return self.deny_access()
+            return self.redirect(users.create_login_url(self.request.uri))
 
         user_email = user.email()
         site_config = models.SiteConfig.get_or_create()
         is_wild_card_allowed = user_email.split('@')[1] in site_config.wild_card_domains
 
-        if is_wild_card_allowed or models.AuthorizedUser.is_user_allowed(user):
+        if is_wild_card_allowed or models.AuthorizedUser.is_user_allowed(user) or users.is_current_user_admin():
             return f(self, *args, **kwargs)
         else:
             return self.deny_access()
@@ -60,11 +60,20 @@ class AdminHandler(BaseHandler):
     def post(self):
         # TODO: XSRF protection
         email = cgi.escape(self.request.get('email'))
+
         if email is None or email == '':
             return self.error()
 
-        # Add user
-        new_user = models.AuthorizedUser.create(email)
+        # Check for wild card
+        if '*' in email:
+            wild_card = email.replace('*', '')
+            site_config = models.SiteConfig.get_or_create()
+            if wild_card not in site_config.wild_card_domains:
+                site_config.wild_card_domains.append(wild_card)
+                site_config.put()
+        else:
+            # Add user
+            new_user = models.AuthorizedUser.create(email)
 
         return webapp2.redirect_to('admin-index')
 
@@ -76,7 +85,8 @@ class AdminHandler(BaseHandler):
         users = models.AuthorizedUser.all()
 
         data = {
-            'users': users
+            'users': users,
+            'wild_card_domains': models.SiteConfig.get_or_create().wild_card_domains
         }
 
         path = os.path.join(os.path.dirname(__file__), 'templates/admin.html')

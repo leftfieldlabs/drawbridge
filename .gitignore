@@ -3,6 +3,7 @@ __pycache__/
 *.py[cod]
 
 venv/
+app.yaml
 
 # C extensions
 *.so

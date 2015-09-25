@@ -13,8 +13,22 @@
     </p>
     {% endfor %}
 
-    <form class="" action="." method="post">
-        <input type="email" name="email" placeholder="user email here">
+    <hr>
+
+    Wild cards:
+    {% for wild_card in wild_card_domains %}
+    <p>
+        {{wild_card}}
+    </p>
+    {% empty %}
+    <p>
+        No wild_cards
+    </p>
+    {% endfor %}
+
+
+    <form class="" action="/admin/" method="post">
+        <input type="text" name="email" placeholder="user email here">
         <button type="submit" name="button">Add user</button>
     </form>
 

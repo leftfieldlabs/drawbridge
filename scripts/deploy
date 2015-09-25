@@ -1,1 +1,8 @@
 #!/bin/sh
+
+CURRENT_DIR=$( echo $PWD )
+SCRIPTS_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+PROJECT_DIR=$( cd $SCRIPTS_DIR && cd .. && pwd )
+APP_DIR=$PROJECT_DIR/app
+
+/usr/local/google_appengine/appcfg.py update $PROJECT_DIR
