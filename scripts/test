@@ -1,0 +1,13 @@
+#!/bin/sh
+echo ''
+echo 'Beginning testing...'
+echo ''
+
+if [ -d venv ]; then
+  source venv/bin/activate
+  nosetests --rednose --with-gae --gae-application='app.yaml' --with-coverage --cover-erase --cover-html --cover-html-dir=htmlcov --cover-package=projection projection/
+  deactivate
+else
+  echo ''
+  echo "Hmm, I don't see an env - try running ./scripts/install."
+fi

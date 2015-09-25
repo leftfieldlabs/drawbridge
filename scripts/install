@@ -1,0 +1,78 @@
+#!/bin/sh
+
+CURRENT_DIR=$( echo $PWD )
+SCRIPTS_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+PROJECT_DIR=$( cd $SCRIPTS_DIR && cd .. && pwd )
+APP_DIR=$PROJECT_DIR/app
+
+python --version >/dev/null 2>&1 || { echo >&2 "\nIt looks like the Python isn't installed. You're going to need it: https://www.python.org/\n"; exit 1; }
+pip --version >/dev/null 2>&1 || { echo >&2 "\nIt looks like the pip isn't installed. You're going to need it: http://www.pip-installer.org/\n"; exit 1; }
+virtualenv --version >/dev/null 2>&1 || { echo >&2 "\nIt looks like virtualenv is not installed; we need it/\n"; exit 1; }
+
+echo ''
+echo 'Looking for virtualenv...'
+echo ''
+
+if [ -d venv ]; then
+    echo ''
+    echo 'Found virtualenv!'
+    echo ''
+else
+    echo ''
+    echo 'Did not find virtualenv, creating now...'
+    echo ''
+    virtualenv --distribute --no-site-packages venv
+fi
+
+echo ''
+echo 'Sourcing venv...'
+echo ''
+
+source venv/bin/activate
+
+echo ''
+echo 'Upgrading pip...'
+echo ''
+pip install --upgrade pip
+
+# gaenv -h >/dev/null 2>&1 || {
+#     echo ''
+#     echo "It looks like gaenv isn't installed - installing it now..."
+#     pip install gaenv
+# }
+
+# if [ -d $APP_DIR/vendor ]; then
+#     echo ''
+#     echo "Vendor folder exists at $APP_DIR/vendor, moving on..."
+#     echo ''
+# else
+#     echo ''
+#     echo 'Creating vendor folder...'
+#     echo ''
+#     mkdir $APP_DIR/vendor
+# fi
+
+if [ -f $PROJECT_DIR/requirements.txt ]; then
+    echo ''
+    echo 'Installing requirements'
+    echo ''
+    pip install -r $PROJECT_DIR/requirements.txt
+fi
+
+# echo ''
+# echo 'Symlink venv libraries to /vendor'
+# echo ''
+#
+# # -n=1 means nothing, should just be -n, but requires an arguement. Weird bug
+# gaenv --lib $APP_DIR/vendor -n=1
+
+# echo ''
+# echo 'Freeze requirements'
+# echo ''
+#
+# pip freeze > $PROJECT_DIR/requirements.txt
+
+
+python $SCRIPTS_DIR/cli.py
+
+deactivate
