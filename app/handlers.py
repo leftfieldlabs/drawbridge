@@ -35,7 +35,7 @@ def requires_admin(f):
     @functools.wraps(f)
     def wrapper(self, *args, **kwargs):
         if not users.is_current_user_admin():
-            self.deny_access()
+            self.deny_access(redirect_uri='/admin')
         else:
             return f(self, *args, **kwargs)
 
@@ -49,7 +49,7 @@ class BaseHandler(webapp2.RequestHandler):
         self.response.status_int = status
         self.response.out.write(template.render(path, {}))
 
-    def deny_access(self):
+    def deny_access(self, redirect_uri='/'):
         path = os.path.join(os.path.dirname(__file__), 'templates/access-denied.html')
         self.response.status_int = 403
 
@@ -57,7 +57,7 @@ class BaseHandler(webapp2.RequestHandler):
 
         data = {
             'nickname': user.nickname(),
-            'logout_url': users.create_logout_url('/')
+            'logout_url': users.create_logout_url(redirect_uri)
         }
 
         self.response.out.write(template.render(path, data))
