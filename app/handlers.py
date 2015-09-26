@@ -52,7 +52,15 @@ class BaseHandler(webapp2.RequestHandler):
     def deny_access(self):
         path = os.path.join(os.path.dirname(__file__), 'templates/access-denied.html')
         self.response.status_int = 403
-        self.response.out.write(template.render(path, {}))
+
+        user = users.get_current_user()
+
+        data = {
+            'nickname': user.nickname(),
+            'logout_url': users.create_logout_url('/')
+        }
+
+        self.response.out.write(template.render(path, data))
 
 class AdminHandler(BaseHandler):
 

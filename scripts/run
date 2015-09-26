@@ -1,5 +1,7 @@
 #!/bin/sh
 
+dev_appserver.py -h >/dev/null 2>&1 || { echo >&2 "\nIt looks like the Google App Engine SDK isn't installed. You're going to need it: https://developers.google.com/appengine/downloads\n"; exit 1; }
+
 CURRENT_DIR=$( echo $PWD )
 SCRIPTS_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 PROJECT_DIR=$( cd $SCRIPTS_DIR && cd .. && pwd )
