@@ -115,15 +115,18 @@ class MainHandler(BaseHandler):
         extension = os.path.splitext(newtpl)[1]
         file_path = os.path.join(os.path.dirname(__file__), newtpl)
 
-        with open (file_path, "r") as myfile:
-            data = myfile.read()
-            if extension == '.js':
-                self.response.headers["Content-Type"] = "text/javascript"
-            if extension == '.css':
-                self.response.headers["Content-Type"] = "text/css"
-            if extension == '.png':
-                self.response.headers["Content-Type"] = "image/png"
-            if extension == '.jpg':
-                self.response.headers["Content-Type"] = "image/jpeg"
+        try:
+            with open (file_path, "r") as myfile:
+                data = myfile.read()
+                if extension == '.js':
+                    self.response.headers["Content-Type"] = "text/javascript"
+                if extension == '.css':
+                    self.response.headers["Content-Type"] = "text/css"
+                if extension == '.png':
+                    self.response.headers["Content-Type"] = "image/png"
+                if extension == '.jpg':
+                    self.response.headers["Content-Type"] = "image/jpeg"
+        except IOError:
+            webapp2.abort(404)
 
         self.response.out.write(data)
