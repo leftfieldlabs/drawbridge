@@ -62,6 +62,27 @@ class BaseHandler(webapp2.RequestHandler):
 
         self.response.out.write(template.render(path, data))
 
+
+class IndexHandler(BaseHandler):
+
+    @requires_auth
+    def get(self):
+
+        user = users.get_current_user()
+
+        # What pages are available?
+        path = os.path.join(os.path.dirname(__file__), 'templates/project')
+        project_pages = [f for f in os.listdir(path) if f not in ['.DS_Store', 'README.md']]
+
+        data = {
+            'pages': project_pages,
+            'nickname': user.nickname(),
+            'logout_url': users.create_logout_url('/')
+        }
+        path = os.path.join(os.path.dirname(__file__), 'templates/index.html')
+        self.response.out.write(template.render(path, data))
+
+
 class AdminHandler(BaseHandler):
 
     @requires_admin

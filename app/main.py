@@ -3,7 +3,7 @@ import handlers
 
 
 _AUTH_ROUTES = [
-    webapp2.Route('/', webapp2.RedirectHandler, defaults={'_uri': '/index.html'}),
+    webapp2.Route('/', handlers.IndexHandler),
     webapp2.Route(r'/<:.*>', handlers.MainHandler),
 ]
 

@@ -7,7 +7,13 @@
     <body>
         <h1>Welcome!</h1>
         <p>
-            Put your code here!
+            {% for page in pages %}
+            <p>
+                <a href="/project/{{page}}">{{page}}</a>
+            </p>
+            {% empty %}
+            <h2>There are no pages currently setup for this project. Please put any client facing pages in app/templates/project</h2>
+            {% endfor %}
         </p>
     </body>
 </html>
