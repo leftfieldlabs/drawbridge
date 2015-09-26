@@ -2,34 +2,31 @@
 
 {% block content %}
 
-    <h1>Admin</h1>
     {% for user in users %}
     <p>
         {{user.email}}
     </p>
     {% empty %}
-    <p>
-        No users
-    </p>
+    <h2>No users added yet</h2>
     {% endfor %}
 
     <hr>
 
-    Wild cards:
     {% for wild_card in wild_card_domains %}
     <p>
         {{wild_card}}
     </p>
     {% empty %}
-    <p>
-        No wild_cards
-    </p>
+    <h2>No wild cards in use</h2>
     {% endfor %}
 
 
     <form class="" action="/admin/" method="post">
-        <input type="text" name="email" placeholder="user email here">
-        <button type="submit" name="button">Add user</button>
+        <div class="form-group">
+            <input type="text" class="form-control" name="email" placeholder="specific email or wildcard">
+            <p class="help-block">Specific email like `seb@something.com` or wildcard, like `*somecompany.com`</p>
+        </div>
+        <button class="btn btn-primary" type="submit" name="button">Add user</button>
     </form>
 
 {% endblock %}

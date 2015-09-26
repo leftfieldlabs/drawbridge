@@ -90,10 +90,13 @@ class AdminHandler(BaseHandler):
     @requires_admin
     def get(self):
 
-        users = models.AuthorizedUser.all()
+        user = users.get_current_user()
+        auth_users = models.AuthorizedUser.all()
 
         data = {
-            'users': users,
+            'nickname': user.nickname(),
+            'logout_url': users.create_logout_url('/admin'),
+            'users': auth_users,
             'wild_card_domains': models.SiteConfig.get_or_create().wild_card_domains
         }
 
