@@ -1,12 +1,28 @@
 import webapp2
 from google.appengine.api import memcache
 from google.appengine.api import users
+from google.appengine.ext import ndb
 from google.appengine.ext.webapp import template
 import functools
+import security
 import logging
 import models
 import cgi
 import os
+
+def requires_xsrf_token(f):
+    """Decorator to validate XSRF tokens for any verb but GET, HEAD, OPTIONS."""
+
+    @functools.wraps(f)
+    def wrapper(self, *args, **kwargs):
+        non_xsrf_protected_verbs = ['options', 'head', 'get']
+        if (self.request.method.lower() in non_xsrf_protected_verbs or
+                self.has_valid_xsrf_token()):
+            return f(self, *args, **kwargs)
+        else:
+            return self.xsrf_fail()
+
+    return wrapper
 
 def requires_auth(f):
     """A decorator that requires a currently logged in user."""
@@ -44,23 +60,59 @@ def requires_admin(f):
 
 class BaseHandler(webapp2.RequestHandler):
 
-    def error(self, status=500):
+    def __init__(self, request, response):
+        self.initialize(request, response)
+
+        user = users.get_current_user()
+
+        if user:
+            key = models.SiteConfig.get_cached_xsrf_key()
+            self._xsrf_token = security.generate_token(key, user.email())
+            #if self.app.config.get('using_angular', constants.DEFAULT_ANGULAR):
+                # AngularJS requires a JS readable XSRF-TOKEN cookie and will pass this
+                # back in AJAX requests.
+                #self.response.set_cookie('XSRF-TOKEN', self._xsrf_token, httponly=False)
+
+        else:
+            self._xsrf_token = None
+
+        self.data = {
+            'xsrf': self._xsrf_token,
+            'is_admin': users.is_current_user_admin() is True,
+            'nickname': user.nickname()
+        }
+
+    def error(self, status=500, message="Unknown error occurred"):
         path = os.path.join(os.path.dirname(__file__), 'templates/error.html')
         self.response.status_int = status
-        self.response.out.write(template.render(path, {}))
+        self.response.out.write(template.render(path, {'message': message}))
+
+    def xsrf_fail(self):
+        return self.error(status=500, message="Invalid XSRF token")
+
+    def has_valid_xsrf_token(self):
+        token = self.request.get('xsrf') or self.request.headers.get('X-XSRF-TOKEN')
+
+        # By default, Angular's $http service will add quotes around the
+        # X-XSRF-TOKEN.
+        # if (token and
+        #         self.app.config.get('using_angular', constants.DEFAULT_ANGULAR) and
+        #             token[0] == '"' and token[-1] == '"'):
+        #     token = token[1:-1]
+
+        current_user = users.get_current_user()
+        xsrf_key = models.SiteConfig.get_cached_xsrf_key()
+        if security.validate_token(xsrf_key, current_user.email(), token):
+            return True
+        return False
 
     def deny_access(self, redirect_uri='/'):
         path = os.path.join(os.path.dirname(__file__), 'templates/access-denied.html')
         self.response.status_int = 403
 
         user = users.get_current_user()
-
-        data = {
-            'nickname': user.nickname(),
-            'logout_url': users.create_logout_url(redirect_uri)
-        }
-
-        self.response.out.write(template.render(path, data))
+        self.data['logout_url'] = users.create_logout_url(redirect_uri)
+        self.response.out.write(template.render(path, self.data))
 
 
 class IndexHandler(BaseHandler):
@@ -86,12 +138,13 @@ class IndexHandler(BaseHandler):
 class AdminHandler(BaseHandler):
 
     @requires_admin
+    @requires_xsrf_token
     def post(self):
-        # TODO: XSRF protection
+
         email = cgi.escape(self.request.get('email'))
 
         if email is None or email == '':
-            return self.error()
+            return self.error(message="Valid email not provided")
 
         # Check for wild card
         if '*' in email:
@@ -114,15 +167,13 @@ class AdminHandler(BaseHandler):
         user = users.get_current_user()
         auth_users = models.AuthorizedUser.all()
 
-        data = {
-            'nickname': user.nickname(),
-            'logout_url': users.create_logout_url('/admin'),
-            'users': auth_users,
-            'wild_card_domains': models.SiteConfig.get_or_create().wild_card_domains
-        }
+
+        self.data['users'] = auth_users
+        self.data['wild_card_domains'] = models.SiteConfig.get_or_create().wild_card_domains
+        self.data['logout_url'] = users.create_logout_url('/admin')
 
         path = os.path.join(os.path.dirname(__file__), 'templates/admin.html')
-        self.response.out.write(template.render(path, data))
+        self.response.out.write(template.render(path, self.data))
 
 
 class MainHandler(BaseHandler):

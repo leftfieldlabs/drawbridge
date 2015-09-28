@@ -23,6 +23,7 @@
 
     <form class="" action="/admin/" method="post">
         <div class="form-group">
+            <input type="hidden" name="xsrf" value="{{xsrf}}">
             <input type="text" class="form-control" name="email" placeholder="specific email or wildcard">
             <p class="help-block">Specific email like `seb@something.com` or wildcard, like `*somecompany.com`</p>
         </div>

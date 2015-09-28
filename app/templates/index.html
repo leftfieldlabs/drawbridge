@@ -20,6 +20,9 @@
     </head>
     <body>
         <h1 style="color:#e1e1e1;">Left Field Labs</h1>
+        {% if is_admin == True %}
+        <a style="position:fixed; right:20px; top:20px;" href="/admin">Admin -></a>
+        {% endif %}
         <p>
             {% for page in pages %}
             <p>>> <a href="/project/{{page}}">{{page}}</a></p>
