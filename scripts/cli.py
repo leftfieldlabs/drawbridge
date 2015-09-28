@@ -1,5 +1,6 @@
 import click
 import os
+from git import Repo
 
 SCRIPTS_DIR = os.path.dirname(os.path.realpath(__file__))
 PROJECT_DIR = os.path.join(SCRIPTS_DIR, '../')
@@ -7,7 +8,7 @@ APP_DIR = os.path.join(SCRIPTS_DIR, '../app')
 
 APP_YAML_TEMPLATE = """
 application: {project_name}
-version: 1
+version: {version}
 api_version: 1
 runtime: python27
 threadsafe: true
@@ -49,14 +50,26 @@ skip_files:
 
 """
 
+def get_repo_hash():
+    repo = Repo(PROJECT_DIR)
+    try:
+        version = repo.heads[0].commit.hexsha[-12:]
+    except:
+        raise
+    return version
+
 
 @click.command()
 def cli():
     project_name = click.prompt("\n\nWhat is the name of this project?")
-    with open(os.path.join(PROJECT_DIR, 'app.yaml'), 'w') as app_yaml_file:
-        app_yaml_file.write(APP_YAML_TEMPLATE.format(
-            project_name=project_name
-        ))
+    try:
+        with open(os.path.join(PROJECT_DIR, 'app.yaml'), 'w') as app_yaml_file:
+            app_yaml_file.write(APP_YAML_TEMPLATE.format(
+                project_name=project_name,
+                version=get_repo_hash()
+            ))
+    except:
+        click.echo("Hmmm... something went wrong. Probably a git commit wasn't present. Try commiting first.")
 
 
 

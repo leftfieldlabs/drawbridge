@@ -2,15 +2,27 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <title>GAE Skeleton</title>
+        <title>LFL Skeleton - Directory</title>
+        <link rel="stylesheet" href="/css/marx.min.css" media="screen" charset="utf-8">
+        <style media="screen">
+            html {
+                background: #222;
+                font-family: "Helvetica Neue", Helvetica, Arial;
+            }
+
+
+
+            body {
+                padding: 20px;
+            }
+        </style>
+
     </head>
     <body>
-        <h1>Welcome!</h1>
+        <h1 style="color:#e1e1e1;">Left Field Labs</h1>
         <p>
             {% for page in pages %}
-            <p>
-                <a href="/project/{{page}}">{{page}}</a>
-            </p>
+            <p>>> <a href="/project/{{page}}">{{page}}</a></p>
             {% empty %}
             <h2>There are no pages currently setup for this project. Please put any client facing pages in app/templates/project</h2>
             {% endfor %}

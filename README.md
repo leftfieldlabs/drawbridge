@@ -18,7 +18,7 @@ Have a static site or just an HTML page you wanna show a client? Download the zi
 1. Rename unpacked folder to whatever you want
 1. Run `./scripts/install` inside folder
 1. When prompted, name your project the same as the app engine APP ID
-1. Add your HTML files to app/templates
+1. Add your HTML files to app/templates/project
 1. Add any static assets to app/templates/[css|js|img]
 1. To view locally, run `./scripts/run`
 1. To deploy, run `./scripts/deploy`
