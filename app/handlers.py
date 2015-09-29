@@ -145,6 +145,18 @@ class SuccessHandler(BaseHandler):
         path = os.path.join(os.path.dirname(__file__), 'templates/success.html')
         self.response.out.write(template.render(path, self.data))
 
+class DeleteWildCardHandler(BaseHandler):
+
+    @requires_admin
+    @requires_xsrf_token
+    def post(self, wild_card):
+
+        site_config = models.SiteConfig.get_or_create()
+        site_config.wild_card_domains.remove(wild_card)
+        site_config.put()
+
+        return self.success(message="Successfully deleted item")
+
 class DeleteKeyHandler(BaseHandler):
 
     @requires_admin

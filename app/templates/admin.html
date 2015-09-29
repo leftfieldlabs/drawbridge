@@ -14,7 +14,7 @@
 
     {% for wild_card in wild_card_domains %}
     <p>
-        {{wild_card}}
+        {{wild_card}} [<a class="delete-wild-card" data-key="{{wild_card}}" style="color:red;" href="#">delete</a>]
     </p>
     {% empty %}
     <h2>No wild cards in use</h2>
@@ -35,25 +35,46 @@
 {% block bottom_js %}
 
 <script>
-    $('.delete-row').click(function(event) {
-        event.preventDefault();
 
-        var key = $(this).data('key');
+    (function() {
 
-        // post a JSON payload:
-        $.ajax({
-          type: 'POST',
-          url: '/admin/' + key +'/delete',
-          // post payload:
-          data: {
-              'xsrf': "{{xsrf}}"
-          },
-          success: function(data) {
-              console.log(data);
-              window.location.replace('/admin/success/');
-          }
-        })
-    })
+        $('.delete-wild-card').click(function(event) {
+            event.preventDefault();
+
+            var key = $(this).data('key');
+
+            $.ajax({
+              type: 'POST',
+              url: '/admin/wild-card/' + key + '/delete',
+              // post payload:
+              data: {
+                  'xsrf': "{{xsrf}}"
+              },
+              success: function(data) {
+                  window.location.replace('/admin/success/');
+              }
+            })
+        });
+
+        $('.delete-row').click(function(event) {
+            event.preventDefault();
+
+            var key = $(this).data('key');
+
+            $.ajax({
+              type: 'POST',
+              url: '/admin/' + key +'/delete',
+              // post payload:
+              data: {
+                  'xsrf': "{{xsrf}}"
+              },
+              success: function(data) {
+                  window.location.replace('/admin/success/');
+              }
+            })
+        });
+
+    })()
 </script>
 
 {% endblock %}
