@@ -63,6 +63,10 @@ class AuthorizedUser(ndb.Model):
         return cls.query(ancestor=cls.ancestor()).fetch(1000)
 
     @classmethod
+    def get_by_email(cls, email):
+        return cls.query(cls.email == email.lower(), ancestor=cls.ancestor()).get()
+
+    @classmethod
     def is_user_allowed(cls, user):
         auth_user = cls.query(cls.email == user.email(), cls.status == cls.APPROVED, ancestor=cls.ancestor()).get()
         return auth_user is not None

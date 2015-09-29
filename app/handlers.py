@@ -82,6 +82,11 @@ class BaseHandler(webapp2.RequestHandler):
             'nickname': user.nickname()
         }
 
+    def success(self, status=200, message="Success!"):
+        path = os.path.join(os.path.dirname(__file__), 'templates/success.html')
+        self.response.status_int = status
+        self.response.out.write(template.render(path, {'message': message}))
+
     def error(self, status=500, message="Unknown error occurred"):
         path = os.path.join(os.path.dirname(__file__), 'templates/error.html')
         self.response.status_int = status
@@ -133,6 +138,27 @@ class IndexHandler(BaseHandler):
         }
         path = os.path.join(os.path.dirname(__file__), 'templates/index.html')
         self.response.out.write(template.render(path, data))
+
+class SuccessHandler(BaseHandler):
+
+    def get(self):
+        path = os.path.join(os.path.dirname(__file__), 'templates/success.html')
+        self.response.out.write(template.render(path, self.data))
+
+class DeleteKeyHandler(BaseHandler):
+
+    @requires_admin
+    @requires_xsrf_token
+    def post(self, key):
+
+        k = ndb.Key(urlsafe=key)
+        obj = k.get()
+        if obj is None:
+            #TODO HANDLE error
+            return self.error()
+
+        k.delete()
+        return self.success(message="Successfully deleted item")
 
 
 class AdminHandler(BaseHandler):

@@ -10,6 +10,10 @@ _AUTH_ROUTES = [
 _ADMIN_ROUTES = [
     webapp2.Route('/admin', handlers.AdminHandler, 'admin-index'),
     webapp2.Route('/admin/', handlers.AdminHandler, 'admin-index'),
+    webapp2.Route('/admin/success', handlers.SuccessHandler, 'admin-success'),
+    webapp2.Route('/admin/success/', handlers.SuccessHandler, 'admin-success'),
+    webapp2.Route('/admin/<key>/delete', handlers.DeleteKeyHandler, 'admin-delete-user'),
+    webapp2.Route('/admin/<key>/delete/', handlers.DeleteKeyHandler, 'admin-delete-user'),
 ]
 
 app = webapp2.WSGIApplication(

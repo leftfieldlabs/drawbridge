@@ -1,0 +1,14 @@
+{% extends "base_admin.html" %}
+
+{% block content %}
+
+{% if message %}
+{{message}}
+{% else %}
+<p>
+    Success!!!
+</p>
+<- <a href="/admin">Return to admin</a>
+{% endif %}
+
+{% endblock %}

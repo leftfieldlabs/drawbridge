@@ -4,7 +4,7 @@
 
     {% for user in users %}
     <p>
-        {{user.email}}
+        {{user.email}} [<a class="delete-row" data-key="{{user.key.urlsafe}}" style="color:red;" href="#">delete</a>]
     </p>
     {% empty %}
     <h2>No users added yet</h2>
@@ -29,5 +29,31 @@
         </div>
         <button class="btn btn-primary" type="submit" name="button">Add user</button>
     </form>
+
+{% endblock %}
+
+{% block bottom_js %}
+
+<script>
+    $('.delete-row').click(function(event) {
+        event.preventDefault();
+
+        var key = $(this).data('key');
+
+        // post a JSON payload:
+        $.ajax({
+          type: 'POST',
+          url: '/admin/' + key +'/delete',
+          // post payload:
+          data: {
+              'xsrf': "{{xsrf}}"
+          },
+          success: function(data) {
+              console.log(data);
+              window.location.replace('/admin/success/');
+          }
+        })
+    })
+</script>
 
 {% endblock %}
