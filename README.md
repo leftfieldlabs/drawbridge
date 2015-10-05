@@ -6,7 +6,7 @@ Have a static site or just an HTML page you wanna show a client? Download the zi
 
 ## Features
 * Defaults to protected, including asset files (css, img and js)
-* Allows management of authorized users
+* Allows management of authorized users @ /admin
 * Allows wild card domains, like leftfieldlabs.com, to allow whole groups
 
 ## TODO
