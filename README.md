@@ -15,7 +15,7 @@ Have a static site or just an HTML page you wanna show a client? Download the zi
 
 ## Requirements
 * Python 2.7
-* [http://code.google.com/appengine/](GoogleAppEngineLauncher) >= 1.9.23 (installed and running)
+* [GoogleAppEngineLauncher](http://code.google.com/appengine/) >= 1.9.23 (installed and running)
 
 ## Using and deploying
 1. Download zip
