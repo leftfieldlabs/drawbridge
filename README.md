@@ -11,7 +11,7 @@ Have a static site or just an HTML page you wanna show a client? Download the zi
 
 ## TODO
 * Tests
-* Delete/update users
+* ~~Delete/update users~~
 
 ## Requirements
 * Python 2.7
