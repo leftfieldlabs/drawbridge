@@ -210,9 +210,36 @@ class AdminHandler(BaseHandler):
         self.data['wild_card_domains'] = models.SiteConfig.get_or_create().wild_card_domains
         self.data['logout_url'] = users.create_logout_url('/admin')
 
-        path = os.path.join(os.path.dirname(__file__), 'templates/admin.html')
+        path = os.path.join(os.path.dirname(__file__), 'templates/admin/admin.html')
         self.response.out.write(template.render(path, self.data))
 
+class AdminAssetHandler(BaseHandler):
+
+    @requires_admin
+    def get(self, *args, **kwargs):
+        tpl = self.request.uri
+        newtpl = 'templates/' +tpl.replace(self.request.host_url+'/', '')
+
+        extension = os.path.splitext(newtpl)[1]
+        file_path = os.path.join(os.path.dirname(__file__), newtpl)
+
+        logging.info(file_path)
+
+        try:
+            with open (file_path, "r") as myfile:
+                data = myfile.read()
+                if extension == '.js':
+                    self.response.headers["Content-Type"] = "text/javascript"
+                if extension == '.css':
+                    self.response.headers["Content-Type"] = "text/css"
+                if extension == '.png':
+                    self.response.headers["Content-Type"] = "image/png"
+                if extension == '.jpg':
+                    self.response.headers["Content-Type"] = "image/jpeg"
+        except IOError:
+            webapp2.abort(404)
+
+        self.response.out.write(data)
 
 class MainHandler(BaseHandler):
 
@@ -220,7 +247,13 @@ class MainHandler(BaseHandler):
     def get(self, *args, **kwargs):
 
         tpl = self.request.uri
-        newtpl = 'templates/' +tpl.replace(self.request.host_url+'/', '')
+        newtpl = 'templates/project' +tpl.replace(self.request.host_url+'/', '')
+
+        if any(x in newtpl for x in ['js/', 'css/', 'img/', 'images/', 'scripts/']):
+            pass
+        else:
+            if '.html' not in newtpl:
+                newtpl += '/index.html'
 
         extension = os.path.splitext(newtpl)[1]
         file_path = os.path.join(os.path.dirname(__file__), newtpl)
