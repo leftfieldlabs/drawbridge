@@ -18,6 +18,8 @@ _ADMIN_ROUTES = [
 
     webapp2.Route('/admin/wild-card/<wild_card>/delete', handlers.DeleteWildCardHandler, 'admin-delete-wild-card'),
     webapp2.Route('/admin/wild-card/<wild_card>/delete/', handlers.DeleteWildCardHandler, 'admin-delete-wild-card'),
+
+    webapp2.Route('/admin/<:.*>', handlers.AdminAssetHandler, 'admin-asset'),
 ]
 
 app = webapp2.WSGIApplication(
