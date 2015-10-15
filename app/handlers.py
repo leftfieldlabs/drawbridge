@@ -210,7 +210,7 @@ class AdminHandler(BaseHandler):
         self.data['wild_card_domains'] = models.SiteConfig.get_or_create().wild_card_domains
         self.data['logout_url'] = users.create_logout_url('/admin')
 
-        path = os.path.join(os.path.dirname(__file__), 'templates/admin.html')
+        path = os.path.join(os.path.dirname(__file__), 'templates/admin/admin.html')
         self.response.out.write(template.render(path, self.data))
 
 
@@ -220,7 +220,13 @@ class MainHandler(BaseHandler):
     def get(self, *args, **kwargs):
 
         tpl = self.request.uri
-        newtpl = 'templates/' +tpl.replace(self.request.host_url+'/', '')
+        newtpl = 'templates/project' +tpl.replace(self.request.host_url+'/', '')
+
+        if any(x in newtpl for x in ['js/', 'css/', 'img/', 'images/', 'scripts/']):
+            pass
+        else:
+            if '.html' not in newtpl:
+                newtpl += '/index.html'
 
         extension = os.path.splitext(newtpl)[1]
         file_path = os.path.join(os.path.dirname(__file__), newtpl)
