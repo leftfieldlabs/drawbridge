@@ -116,6 +116,8 @@ case "$COMMAND" in
 
         appcfg.py update $PROJECT_DIR
 
+        appcfg.py --version=$VERSION set_default_version $PROJECT_DIR
+
         echo ''
         echo "Cleaning up"
         echo ''
