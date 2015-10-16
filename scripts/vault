@@ -19,6 +19,12 @@ VERSION=1 # Default to 1
 # TODO: Find this
 #appcfg.py >/dev/null 2>&1 || { echo >&2 "\nHmm... doesn't look like you have Google App Engine installed\n"; exit 1;}
 
+APPCFG_PATH="$(which appcfg.py)"
+
+if [ ! ${#APPCFG_PATH} -gt 0 ]; then
+    echo "Doesn't look like you have Google App Engine SDK installed. Go to https://cloud.google.com/appengine/downloads?hl=en"; exit 1;
+fi
+
 if [ ! $# -gt 0 ]; then
     echo 'You did not provide a command'; exit 1;
 else
