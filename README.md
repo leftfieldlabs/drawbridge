@@ -21,6 +21,10 @@ Have a static site or just an HTML page you wanna show a client? You can easily 
 
 ## Using and deploying
 1. Clone repo
-2. Run `./scripts/install`
-3. Run `vault deploy [gae app id]`
-4. Visit `[gae app id].appspot.com` to see your site
+1. Run `./scripts/install`
+1. Create an GAE app at [GAE console](http://console.developers.google.com) and get an app id
+1. From inside the directory with all your site assets, run `vault deploy [gae app id]`
+1. Visit `[gae app id].appspot.com` to see your site
+
+## Notes
+* When you deploy to app instance, make sure your deploy is displayed by going to https://console.developers.google.com/project/[your app id here]/appengine/versions and setting it to `default`
