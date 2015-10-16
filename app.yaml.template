@@ -1,0 +1,41 @@
+
+application: __APP_NAME__
+version: __VERSION__
+api_version: 1
+runtime: python27
+threadsafe: true
+
+libraries:
+- name: jinja2
+  version: 2.6
+- name: webapp2
+  version: latest
+
+handlers:
+
+- url: /.*
+  script: app.main.app
+  secure: always
+  login: required
+
+skip_files:
+- ^(.*/)?#.*#
+- ^(.*/)?.*\.py[co]
+- ^(.*/)?.*\.so$
+- ^(.*/)?.*\_test.(html|js|py)$
+- ^(.*/)?.*~
+- ^(.*/)?\..*
+- ^(.*/)?app\.yaml
+- ^(.*/)?app\.yml
+- ^(.*/)?index\.yaml
+- ^(.*/)?index\.yml
+- ^env/.*
+- ^htmlcov/.*
+- ^lib/nose/.*
+- ^lib/coverage/.*
+- ^lib/gaenv/.*
+- ^lib/nosegae/.*
+- ^lib/rednose/.*
+- ^script/.*
+- ^utils/.*
+- ^node_modules/.*
