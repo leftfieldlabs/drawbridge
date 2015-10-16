@@ -4,5 +4,89 @@ CURRENT_DIR=$( echo $PWD )
 SCRIPTS_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 PROJECT_DIR=$( cd $SCRIPTS_DIR && cd .. && pwd )
 APP_DIR=$PROJECT_DIR/app
+CONTENT_DIR=$PROJECT_DIR/app/templates/project
 
-/usr/local/google_appengine/appcfg.py update $PROJECT_DIR
+VERSION=1 # Default to 1
+
+# TODO: Find this
+#appcfg.py >/dev/null 2>&1 || { echo >&2 "\nHmm... doesn't look like you have Google App Engine installed\n"; exit 1;}
+
+if [ $# -eq 0 ]; then
+    echo 'You did not provide an app name'; exit 1;
+fi
+
+echo ''
+echo "Targeting $CURRENT_DIR"
+echo ''
+
+echo ''
+echo "Checking for git hash"
+echo ''
+
+cd "$CURRENT_DIR" && git rev-parse --short HEAD >/dev/null 2>&1 || { echo >&2 "\nLooks like git is not enabled in this directory. Make sure you have git and at least one commit\n"; exit 1; }
+
+VERSION=$(cd "$CURRENT_DIR" && git rev-parse --short HEAD)
+
+echo ''
+echo "Clearing old project files"
+echo ''
+
+for item in "$CONTENT_DIR"/*
+do
+    if [ -f "$item" ]; then
+        rm "$item"
+    else
+        rm -R "$item"
+    fi
+done
+
+echo ''
+echo "Copying files from $CURRENT_DIR to $CONTENT_DIR"
+echo ''
+
+for item in "$CURRENT_DIR"/*
+do
+    if [ -f "$item" ]; then
+        cp "$item" $CONTENT_DIR
+    else
+        cp -R "$item" $CONTENT_DIR
+    fi
+done
+
+echo ''
+echo "Building app.yaml for $1"
+echo ''
+
+cat "$PROJECT_DIR"/app.yaml.template | sed 's/__APP_NAME__/'"$1"'/' | sed 's/__VERSION__/'"$VERSION"'/' > "$PROJECT_DIR"/app.yaml
+
+echo ''
+echo "Deploying $1"
+echo ''
+
+appcfg.py update $PROJECT_DIR
+
+echo ''
+echo "Cleaning up"
+echo ''
+
+echo ''
+echo "Deleting previous app.yaml"
+echo ''
+
+rm -f "$PROJECT_DIR"/app.yaml
+
+# echo ''
+# echo "Checking for app.yaml in project folder"
+# echo ''
+
+# if [ ! -e "$CONTENT_DIR"/app.yaml ]; then
+#     echo ''
+#     echo "Uh oh! You don't have an app.yaml file present; add that to your project files"
+#     echo ''
+# else
+#     echo ''
+#     echo "Moving app.yaml to root folder"
+#     echo ''
+#
+#     mv "$CONTENT_DIR"/app.yaml "$PROJECT_DIR"
+# fi
