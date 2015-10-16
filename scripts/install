@@ -9,45 +9,4 @@ echo ''
 echo "Installing to /usr/local/bin"
 echo ''
 
-ln -s "$SCRIPTS_DIR"/deploy 
-
-# python --version >/dev/null 2>&1 || { echo >&2 "\nIt looks like the Python isn't installed. You're going to need it: https://www.python.org/\n"; exit 1; }
-# pip --version >/dev/null 2>&1 || { echo >&2 "\nIt looks like the pip isn't installed. You're going to need it: http://www.pip-installer.org/\n"; exit 1; }
-# virtualenv --version >/dev/null 2>&1 || { echo >&2 "\nIt looks like virtualenv is not installed; we need it/\n"; exit 1; }
-#
-# echo ''
-# echo 'Looking for virtualenv...'
-# echo ''
-#
-# if [ -d venv ]; then
-#     echo ''
-#     echo 'Found virtualenv!'
-#     echo ''
-# else
-#     echo ''
-#     echo 'Did not find virtualenv, creating now...'
-#     echo ''
-#     virtualenv --distribute --no-site-packages venv
-# fi
-#
-# echo ''
-# echo 'Sourcing venv...'
-# echo ''
-#
-# source venv/bin/activate
-#
-# echo ''
-# echo 'Upgrading pip...'
-# echo ''
-# pip install --upgrade pip
-#
-# if [ -f $PROJECT_DIR/requirements.txt ]; then
-#     echo ''
-#     echo 'Installing requirements'
-#     echo ''
-#     pip install -r $PROJECT_DIR/requirements.txt
-# fi
-#
-# python $SCRIPTS_DIR/cli.py
-#
-# deactivate
+ln -s "$SCRIPTS_DIR"/vault /usr/local/bin/vault
