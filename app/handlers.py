@@ -247,7 +247,7 @@ class MainHandler(BaseHandler):
     def get(self, *args, **kwargs):
 
         tpl = self.request.uri
-        newtpl = 'templates/project' +tpl.replace(self.request.host_url+'/', '')
+        newtpl = 'templates/project/' +tpl.replace(self.request.host_url+'/', '')
 
         if any(x in newtpl for x in ['js/', 'css/', 'img/', 'images/', 'scripts/']):
             pass
