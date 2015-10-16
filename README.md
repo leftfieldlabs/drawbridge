@@ -27,4 +27,4 @@ Have a static site or just an HTML page you wanna show a client? You can easily 
 1. Visit `[gae app id].appspot.com` to see your site
 
 ## Notes
-* When you deploy, make sure your updates are displayed by going to (replaced with your app id) https://console.developers.google.com/project/your-app-id-here/appengine/versions and setting the latest deploy to `default`
+* `vault deploy` automatically sets your new deploy as default
