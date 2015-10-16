@@ -37,7 +37,26 @@ case "$COMMAND" in
         cd "$PROJECT_DIR" && git pull
     ;;
     'help')
-        echo 'Put help stuff here!'
+        echo ""
+        echo "------------------------------ -=()=- ------------------------------"
+        echo ""
+        echo ""
+        echo ""
+        echo "Welcome Vault Dweller!"
+        echo ""
+        echo "To update Vault, enter: 'vault update'"
+        echo ""
+        echo "To deploy, simply go to the folder of files you wish to deploy and enter: "
+        echo ""
+        echo "'vault deploy app-id-here'"
+        echo ""
+        echo "where 'app-id-here' is your own app id"
+        echo ""
+        echo "Need more help? Email sebastian@leftfieldlabs.com"
+        echo ""
+        echo ""
+        echo "------------------------------ -=()=- ------------------------------"
+        echo ""
     ;;
     'deploy')
 
