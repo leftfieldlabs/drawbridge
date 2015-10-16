@@ -1,6 +1,8 @@
 # Vault
 A tool to deploy a static site to a fully protected GAE instance
 
+![Vault Tect](vault-tec.jpg)
+
 ## What is this for?
 Have a static site or just an HTML page you wanna show a client? You can easily push content to a remote, secure and whitelisted site.
 
