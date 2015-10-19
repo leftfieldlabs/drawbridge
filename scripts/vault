@@ -107,9 +107,17 @@ case "$COMMAND" in
         echo "Checking for git hash"
         echo ''
 
-        cd "$CURRENT_DIR" && git rev-parse --short HEAD >/dev/null 2>&1 || { echo >&2 "\nLooks like git is not enabled in this directory. Make sure you have git and at least one commit\n"; exit 1; }
+        cd "$CURRENT_DIR" && git rev-parse --short HEAD >/dev/null 2>&1 || {
+            echo >&2 "\nLooks like git is not enabled in this directory. We're gonna default to version '1', just so you know.\n"
+            VERSION=0
+        }
 
-        VERSION=$(cd "$CURRENT_DIR" && git rev-parse --short HEAD)
+        if [ $VERSION -eq 0 ]; then
+            VERSION=1
+        else
+            VERSION=$(cd "$CURRENT_DIR" && git rev-parse --short HEAD)
+        fi
+
 
         echo ''
         echo "Clearing old project files"
