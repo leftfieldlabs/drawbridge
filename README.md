@@ -14,6 +14,7 @@ Have a static site or just an HTML page you wanna show a client? You can easily 
 ## TODO
 * Tests
 * Cleaner admin
+* Apps are deployed to subdomain of unified system
 * ~~Delete/update users~~
 
 ## Requirements
