@@ -13,6 +13,7 @@ Have a static site or just an HTML page you wanna show a client? You can easily 
 
 ## TODO
 * Tests
+* Cleaner admin
 * ~~Delete/update users~~
 
 ## Requirements
@@ -22,9 +23,16 @@ Have a static site or just an HTML page you wanna show a client? You can easily 
 ## Using and deploying
 1. Clone repo
 1. Navigate to your newly cloned folder and run `sudo ./scripts/install`
-1. Create an GAE app at [GAE console](http://console.developers.google.com) and get an app id
+1. Create a GAE app (if you don't already have one) at [GAE console](http://console.developers.google.com) and get an app id
 1. From inside the directory with all your site assets, run `vault deploy [gae app id]`
 1. Visit `[gae app id].appspot.com` to see your site
 
+## Updating
+Run `vault update` from anywhere to get latest vault code
+
 ## Notes
+* If a URI goes to a directory, like `http://someapp.appspot.com/something/`, it will attempt to load an index.html. It will not work with anything else
 * `vault deploy` automatically sets your new deploy as default
+
+## Feature requests
+If you need a new feature, please create an issue or (better yet) submit a pull request.
