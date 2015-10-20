@@ -62,10 +62,10 @@ case "$COMMAND" in
         done
 
         echo ''
-        echo "Building app.yaml for $APP_NAME"
+        echo "Building app.yaml for local app"
         echo ''
 
-        cat "$PROJECT_DIR"/app.yaml.template | sed 's/__APP_NAME__/'"$APP_NAME"'/' | sed 's/__VERSION__/'"$VERSION"'/' > "$PROJECT_DIR"/app.yaml
+        cat "$PROJECT_DIR"/app.yaml.template | sed 's/__APP_NAME__/local-app/' | sed 's/__VERSION__/'"$VERSION"'/' > "$PROJECT_DIR"/app.yaml
 
         dev_appserver.py "$PROJECT_DIR"
     ;;
