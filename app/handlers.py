@@ -239,7 +239,7 @@ class AdminAssetHandler(BaseHandler):
                 if extension == '.mp4':
                     self.response.headers["Content-Type"] = "video/mp4"
                 if extension == '.ogv':
-                    self.response.headers["Content-Type"] = "image/ogg"
+                    self.response.headers["Content-Type"] = "video/ogg"
         except IOError:
             webapp2.abort(404)
 
@@ -276,7 +276,7 @@ class MainHandler(BaseHandler):
                 if extension == '.mp4':
                     self.response.headers["Content-Type"] = "video/mp4"
                 if extension == '.ogv':
-                    self.response.headers["Content-Type"] = "image/ogg"
+                    self.response.headers["Content-Type"] = "video/ogg"
         except IOError:
             webapp2.abort(404)
 
