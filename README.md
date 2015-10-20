@@ -34,7 +34,7 @@ Have a static site or just an HTML page you wanna show a client? You can easily 
 Run `vault update` from anywhere to get latest vault code
 
 ## Local server
-Run `vault local` from directory with content to test locally
+Run `vault local` from directory with content to test locally. Keep in mind this does not currently refresh code changes. You'll need to re-run the command to get latest changes from your code.
 
 ## Notes
 * If a URI goes to a directory, like `http://someapp.appspot.com/something/`, it will attempt to load an index.html. It will not work with anything else
