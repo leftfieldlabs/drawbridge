@@ -236,6 +236,10 @@ class AdminAssetHandler(BaseHandler):
                     self.response.headers["Content-Type"] = "image/png"
                 if extension == '.jpg':
                     self.response.headers["Content-Type"] = "image/jpeg"
+                if extension == '.mp4':
+                    self.response.headers["Content-Type"] = "video/mp4"
+                if extension == '.ogv':
+                    self.response.headers["Content-Type"] = "image/ogg"
         except IOError:
             webapp2.abort(404)
 
@@ -249,7 +253,7 @@ class MainHandler(BaseHandler):
         tpl = self.request.uri
         newtpl = 'templates/project/' +tpl.replace(self.request.host_url+'/', '')
 
-        if any(x in newtpl for x in ['js/', 'css/', 'img/', 'images/', 'scripts/']):
+        if any(x in newtpl for x in ['js/', 'css/', 'img/', 'images/', 'videos/', 'scripts/']):
             pass
         else:
             if '.html' not in newtpl:
@@ -269,6 +273,10 @@ class MainHandler(BaseHandler):
                     self.response.headers["Content-Type"] = "image/png"
                 if extension == '.jpg':
                     self.response.headers["Content-Type"] = "image/jpeg"
+                if extension == '.mp4':
+                    self.response.headers["Content-Type"] = "video/mp4"
+                if extension == '.ogv':
+                    self.response.headers["Content-Type"] = "image/ogg"
         except IOError:
             webapp2.abort(404)
 
