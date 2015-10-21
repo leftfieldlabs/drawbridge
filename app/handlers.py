@@ -228,6 +228,8 @@ class AdminAssetHandler(BaseHandler):
         try:
             with open (file_path, "r") as myfile:
                 data = myfile.read()
+                if extension == '.ico':
+                    self.response.headers["Content-Type"] = "image/x-icon"
                 if extension == '.js':
                     self.response.headers["Content-Type"] = "text/javascript"
                 if extension == '.css':
@@ -265,6 +267,8 @@ class MainHandler(BaseHandler):
         try:
             with open (file_path, "r") as myfile:
                 data = myfile.read()
+                if extension == '.ico':
+                    self.response.headers["Content-Type"] = "image/x-icon"
                 if extension == '.js':
                     self.response.headers["Content-Type"] = "text/javascript"
                 if extension == '.css':
