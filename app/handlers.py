@@ -10,6 +10,17 @@ import models
 import cgi
 import os
 
+MIMETYPE_MAP = {
+    'ico': 'image/x-icon',
+    'js' : 'text/javascript',
+    'css': 'text/css',
+    'png': 'image/png',
+    'html': 'text/html',
+    'jpg': 'image/jpg',
+    'mp4': 'video/mp4',
+    'ogv': 'video/ogg'
+}
+
 def requires_xsrf_token(f):
     """Decorator to validate XSRF tokens for any verb but GET, HEAD, OPTIONS."""
 
@@ -228,20 +239,12 @@ class AdminAssetHandler(BaseHandler):
         try:
             with open (file_path, "r") as myfile:
                 data = myfile.read()
-                if extension == '.ico':
-                    self.response.headers["Content-Type"] = "image/x-icon"
-                if extension == '.js':
-                    self.response.headers["Content-Type"] = "text/javascript"
-                if extension == '.css':
-                    self.response.headers["Content-Type"] = "text/css"
-                if extension == '.png':
-                    self.response.headers["Content-Type"] = "image/png"
-                if extension == '.jpg':
-                    self.response.headers["Content-Type"] = "image/jpeg"
-                if extension == '.mp4':
-                    self.response.headers["Content-Type"] = "video/mp4"
-                if extension == '.ogv':
-                    self.response.headers["Content-Type"] = "video/ogg"
+                cleaned_extension = extension.replace('.', '').lower()
+                mimetype = 'application/octet-stream'
+                if cleaned_extension in MIMETYPE_MAP:
+                    mimetype = MIMETYPE_MAP[cleaned_extension]
+                self.response.headers["Content-Type"] = mimetype
+
         except IOError:
             webapp2.abort(404)
 
@@ -255,7 +258,7 @@ class MainHandler(BaseHandler):
         tpl = self.request.uri
         newtpl = 'templates/project/' +tpl.replace(self.request.host_url+'/', '')
 
-        if any(x in newtpl for x in ['js/', 'css/', 'img/', 'images/', 'videos/', 'scripts/']):
+        if any(x in newtpl for x in ['js/', 'css/', 'img/', 'images/', 'videos/', 'scripts/']) or '.ico' in newtpl:
             pass
         else:
             if '.html' not in newtpl:
@@ -267,20 +270,12 @@ class MainHandler(BaseHandler):
         try:
             with open (file_path, "r") as myfile:
                 data = myfile.read()
-                if extension == '.ico':
-                    self.response.headers["Content-Type"] = "image/x-icon"
-                if extension == '.js':
-                    self.response.headers["Content-Type"] = "text/javascript"
-                if extension == '.css':
-                    self.response.headers["Content-Type"] = "text/css"
-                if extension == '.png':
-                    self.response.headers["Content-Type"] = "image/png"
-                if extension == '.jpg':
-                    self.response.headers["Content-Type"] = "image/jpeg"
-                if extension == '.mp4':
-                    self.response.headers["Content-Type"] = "video/mp4"
-                if extension == '.ogv':
-                    self.response.headers["Content-Type"] = "video/ogg"
+                cleaned_extension = extension.replace('.', '').lower()
+                mimetype = 'application/octet-stream'
+                if cleaned_extension in MIMETYPE_MAP:
+                    mimetype = MIMETYPE_MAP[cleaned_extension]
+                self.response.headers["Content-Type"] = mimetype
+
         except IOError:
             webapp2.abort(404)
 
