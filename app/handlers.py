@@ -234,8 +234,6 @@ class AdminAssetHandler(BaseHandler):
         extension = os.path.splitext(newtpl)[1]
         file_path = os.path.join(os.path.dirname(__file__), newtpl)
 
-        logging.info(file_path)
-
         try:
             with open (file_path, "r") as myfile:
                 data = myfile.read()
@@ -257,14 +255,12 @@ class MainHandler(BaseHandler):
 
         tpl = self.request.uri
         newtpl = 'templates/project/' +tpl.replace(self.request.host_url+'/', '')
-
-        if any(x in newtpl for x in ['js/', 'css/', 'img/', 'images/', 'videos/', 'scripts/']) or '.ico' in newtpl:
-            pass
-        else:
-            if '.html' not in newtpl:
-                newtpl += '/index.html'
-
         extension = os.path.splitext(newtpl)[1]
+
+        if not extension:
+            extension = '.html'
+            newtpl += 'index.html'
+
         file_path = os.path.join(os.path.dirname(__file__), newtpl)
 
         try:
