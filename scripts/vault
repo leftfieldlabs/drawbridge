@@ -157,6 +157,12 @@ case "$COMMAND" in
 
         appcfg.py update $PROJECT_DIR
 
+        echo ''
+        echo "Waiting a few seconds before setting default..."
+        echo ''
+
+        sleep 3
+
         appcfg.py --version=$VERSION set_default_version $PROJECT_DIR
 
         echo ''
