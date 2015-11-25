@@ -18,6 +18,7 @@ MIMETYPE_MAP = {
     'html': 'text/html',
     'jpg': 'image/jpg',
     'mp4': 'video/mp4',
+    'webm': 'video/webm',
     'ogv': 'video/ogg'
 }
 
