@@ -96,6 +96,10 @@ case "$COMMAND" in
         echo "Are you positive you want to deploy $CURRENT_DIR? [Y/n]"
         read answer
 
+        if [ $answer == "n" ] || [ $answer == "N" ]; then
+            exit 1;
+        fi
+
         if [ ! $# -eq 2 ]; then
             echo 'You did not provide an app id'; exit 1;
         fi
