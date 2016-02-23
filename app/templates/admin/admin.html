@@ -4,7 +4,16 @@
 
     {% for user in users %}
     <p>
-        {{user.email}} [<a class="delete-row" data-key="{{user.key.urlsafe}}" style="color:red;" href="#">delete</a>]
+        {% if user.status == 3 %}
+            [ + ]
+        {% endif %}{{user.email}} [<a class="delete-row" data-key="{{user.key.urlsafe}}" style="color:red;" href="#">delete</a>]
+        [<a class="admin-toggle" data-key="{{user.key.urlsafe}}" href="#">
+            {% if user.status == 2 %}
+                promote to admin
+            {% else %}
+                demote to user
+            {% endif %}
+        </a>]
     </p>
     {% empty %}
     <h2>No users added yet</h2>
@@ -37,6 +46,24 @@
 <script>
 
     (function() {
+
+        $('.admin-toggle').click(function(event) {
+            event.preventDefault();
+
+            var key = $(this).data('key');
+
+            $.ajax({
+              type: 'POST',
+              url: '/admin/' + key + '/toggle-admin-status',
+              // post payload:
+              data: {
+                  'xsrf': "{{xsrf}}"
+              },
+              success: function(data) {
+                  window.location.replace('/admin/success/');
+              }
+            })
+        });
 
         $('.delete-wild-card').click(function(event) {
             event.preventDefault();
