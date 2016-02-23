@@ -81,9 +81,7 @@ case "$COMMAND" in
         echo ""
         echo "To deploy, simply go to the folder of files you wish to deploy and enter: "
         echo ""
-        echo "'vault deploy app-id-here'"
-        echo ""
-        echo "where 'app-id-here' is your own app id"
+        echo "'vault deploy project-name-here'"
         echo ""
         echo "Need more help? Email sebastian@leftfieldlabs.com"
         echo ""
@@ -174,6 +172,10 @@ case "$COMMAND" in
         echo ''
 
         rm -f "$PROJECT_DIR"/app.yaml
+
+        echo ''
+        echo "Visit your site at https://$VERSION_NAME-dot-$APP_NAME.appspot.com"
+        echo ''
     ;;
     *)
         echo "Sorry, this command was not recognized. Type 'vault help'."
