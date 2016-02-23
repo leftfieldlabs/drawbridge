@@ -65,7 +65,7 @@ case "$COMMAND" in
         echo "Building app.yaml for local app"
         echo ''
 
-        cat "$PROJECT_DIR"/app.yaml.template | sed 's/__APP_NAME__/local-app/' | sed 's/__VERSION__/'"$VERSION"'/' > "$PROJECT_DIR"/app.yaml
+        cat "$PROJECT_DIR"/app.yaml.template | sed 's/__APP_NAME__/local-app/' | sed 's/__VERSION__/'"$VERSION_NAME"'/' > "$PROJECT_DIR"/app.yaml
 
         dev_appserver.py "$PROJECT_DIR"
     ;;
@@ -100,7 +100,8 @@ case "$COMMAND" in
             echo 'You did not provide an app id'; exit 1;
         fi
 
-        APP_NAME=$2
+        VERSION_NAME=$2
+        APP_NAME="lflwebreview"
 
         echo ''
         echo "Targeting $CURRENT_DIR"
@@ -152,21 +153,13 @@ case "$COMMAND" in
         echo "Building app.yaml for $APP_NAME"
         echo ''
 
-        cat "$PROJECT_DIR"/app.yaml.template | sed 's/__APP_NAME__/'"$APP_NAME"'/' | sed 's/__VERSION__/'"$VERSION"'/' > "$PROJECT_DIR"/app.yaml
+        cat "$PROJECT_DIR"/app.yaml.template | sed 's/__APP_NAME__/'"$APP_NAME"'/' | sed 's/__VERSION__/'"$VERSION_NAME"'/' > "$PROJECT_DIR"/app.yaml
 
         echo ''
-        echo "Deploying $APP_NAME"
+        echo "Deploying $VERSION_NAME"
         echo ''
 
         appcfg.py update $PROJECT_DIR
-
-        echo ''
-        echo "Waiting a few seconds before setting default..."
-        echo ''
-
-        sleep 3
-
-        appcfg.py --version=$VERSION set_default_version $PROJECT_DIR
 
         echo ''
         echo "Cleaning up"
