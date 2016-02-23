@@ -5,6 +5,7 @@ import os
 class SiteConfig(ndb.Model):
 
     xsrf_key = ndb.BlobProperty()
+    release_name = ndb.StringProperty(required=True, indexed=True)
     wild_card_domains = ndb.StringProperty(repeated=True)
 
     @classmethod
@@ -19,19 +20,20 @@ class SiteConfig(ndb.Model):
             memcache.set('xsrf_key', xsrf_key)
         return xsrf_key
 
-
     @classmethod
     @ndb.transactional
-    def get_or_create(cls):
-        config = cls.query(ancestor=cls.ancestor()).get()
+    def get_or_create(cls, release_name):
+        config = cls.query(cls.release_name == release_name, ancestor=cls.ancestor()).get()
         if config is None:
             config = cls(parent=cls.ancestor())
+            config.release_name = release_name
             config.xsrf_key = os.urandom(16)
             config.put()
         return config
 
 
 class AuthorizedUser(ndb.Model):
+    release_name = ndb.StringProperty(required=True, indexed=True)
     email = ndb.StringProperty(required=True, indexed=True)
 
     @classmethod
@@ -47,12 +49,12 @@ class AuthorizedUser(ndb.Model):
 
     @classmethod
     @ndb.transactional
-    def create(cls, email):
-        user = cls.query(cls.email == email.lower(), ancestor=cls.ancestor()).get()
+    def create(cls, email, release_name):
+        user = cls.query(cls.email == email.lower(), cls.release_name == release_name, ancestor=cls.ancestor()).get()
         if user:
             return user
         else:
-            new_user = cls(parent=cls.ancestor(), email=email.lower())
+            new_user = cls(parent=cls.ancestor(), release_name=release_name, email=email.lower())
             key = new_user.put()
             # Refresh
             return key.get()
@@ -63,10 +65,14 @@ class AuthorizedUser(ndb.Model):
         return cls.query(ancestor=cls.ancestor()).fetch(1000)
 
     @classmethod
+    def get_by_release_name(cls, release_name):
+        return cls.query(cls.release_name == release_name).fetch(1000)
+
+    @classmethod
     def get_by_email(cls, email):
         return cls.query(cls.email == email.lower(), ancestor=cls.ancestor()).get()
 
     @classmethod
-    def is_user_allowed(cls, user):
-        auth_user = cls.query(cls.email == user.email(), cls.status == cls.APPROVED, ancestor=cls.ancestor()).get()
+    def is_user_allowed(cls, user, release_name):
+        auth_user = cls.query(cls.email == user.email(), cls.release_name == release_name, cls.status == cls.APPROVED, ancestor=cls.ancestor()).get()
         return auth_user is not None

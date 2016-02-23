@@ -22,6 +22,9 @@ MIMETYPE_MAP = {
     'ogv': 'video/ogg'
 }
 
+def get_release_name(request):
+    return request.url.split("-dot-")[0].replace('https://', '')
+
 def requires_xsrf_token(f):
     """Decorator to validate XSRF tokens for any verb but GET, HEAD, OPTIONS."""
 
@@ -45,11 +48,13 @@ def requires_auth(f):
         if not user:
             return self.redirect(users.create_login_url(self.request.uri))
 
+        release_name = get_release_name(self.request)
+
         user_email = user.email()
-        site_config = models.SiteConfig.get_or_create()
+        site_config = models.SiteConfig.get_or_create(release_name)
         is_wild_card_allowed = user_email.split('@')[1] in site_config.wild_card_domains
 
-        if is_wild_card_allowed or models.AuthorizedUser.is_user_allowed(user) or users.is_current_user_admin():
+        if is_wild_card_allowed or models.AuthorizedUser.is_user_allowed(user, release_name) or users.is_current_user_admin():
             return f(self, *args, **kwargs)
         else:
             return self.deny_access()
@@ -163,7 +168,7 @@ class DeleteWildCardHandler(BaseHandler):
     @requires_xsrf_token
     def post(self, wild_card):
 
-        site_config = models.SiteConfig.get_or_create()
+        site_config = models.SiteConfig.get_or_create(get_release_name(self.request))
         site_config.wild_card_domains.remove(wild_card)
         site_config.put()
 
@@ -199,13 +204,13 @@ class AdminHandler(BaseHandler):
         # Check for wild card
         if '*' in email:
             wild_card = email.replace('*', '')
-            site_config = models.SiteConfig.get_or_create()
+            site_config = models.SiteConfig.get_or_create(get_release_name(self.request))
             if wild_card not in site_config.wild_card_domains:
                 site_config.wild_card_domains.append(wild_card)
                 site_config.put()
         else:
             # Add user
-            new_user = models.AuthorizedUser.create(email)
+            new_user = models.AuthorizedUser.create(email, get_release_name(self.request))
 
         return webapp2.redirect_to('admin-index')
 
@@ -217,9 +222,8 @@ class AdminHandler(BaseHandler):
         user = users.get_current_user()
         auth_users = models.AuthorizedUser.all()
 
-
         self.data['users'] = auth_users
-        self.data['wild_card_domains'] = models.SiteConfig.get_or_create().wild_card_domains
+        self.data['wild_card_domains'] = models.SiteConfig.get_or_create(get_release_name(self.request)).wild_card_domains
         self.data['logout_url'] = users.create_logout_url('/admin')
 
         path = os.path.join(os.path.dirname(__file__), 'templates/admin/admin.html')
