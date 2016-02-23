@@ -67,10 +67,11 @@ def requires_admin(f):
 
     @functools.wraps(f)
     def wrapper(self, *args, **kwargs):
-        if not users.is_current_user_admin():
-            self.deny_access(redirect_uri='/admin')
-        else:
+        user = users.get_current_user()
+        if users.is_current_user_admin() or models.AuthorizedUser.is_admin(user, get_release_name(self.request)):
             return f(self, *args, **kwargs)
+        else:
+            self.deny_access(redirect_uri='/admin')
 
     return wrapper
 
@@ -82,8 +83,10 @@ class BaseHandler(webapp2.RequestHandler):
 
         user = users.get_current_user()
 
+        release_name = get_release_name(request)
+
         if user:
-            key = models.SiteConfig.get_cached_xsrf_key()
+            key = models.SiteConfig.get_cached_xsrf_key(release_name)
             self._xsrf_token = security.generate_token(key, user.email())
             #if self.app.config.get('using_angular', constants.DEFAULT_ANGULAR):
                 # AngularJS requires a JS readable XSRF-TOKEN cookie and will pass this
@@ -123,7 +126,7 @@ class BaseHandler(webapp2.RequestHandler):
         #     token = token[1:-1]
 
         current_user = users.get_current_user()
-        xsrf_key = models.SiteConfig.get_cached_xsrf_key()
+        xsrf_key = models.SiteConfig.get_cached_xsrf_key(get_release_name(self.request))
         if security.validate_token(xsrf_key, current_user.email(), token):
             return True
         return False
@@ -189,6 +192,23 @@ class DeleteKeyHandler(BaseHandler):
         k.delete()
         return self.success(message="Successfully deleted item")
 
+class ToggleAdminStatusHandler(BaseHandler):
+
+    @requires_admin
+    @requires_xsrf_token
+    def post(self, key):
+
+        k = ndb.Key(urlsafe=key)
+        obj = k.get()
+        if obj is None:
+            return self.error()
+
+        try:
+            obj.toggle_admin()
+        except:
+            return self.error()
+        return self.success(message="Successfully toggled item")
+
 
 class AdminHandler(BaseHandler):
 
@@ -214,13 +234,11 @@ class AdminHandler(BaseHandler):
 
         return webapp2.redirect_to('admin-index')
 
-
-
     @requires_admin
     def get(self):
 
         user = users.get_current_user()
-        auth_users = models.AuthorizedUser.all()
+        auth_users = models.AuthorizedUser.get_by_release_name(get_release_name(self.request))
 
         self.data['users'] = auth_users
         self.data['wild_card_domains'] = models.SiteConfig.get_or_create(get_release_name(self.request)).wild_card_domains
@@ -259,7 +277,7 @@ class MainHandler(BaseHandler):
     def get(self, *args, **kwargs):
 
         tpl = self.request.uri
-        newtpl = 'templates/project/' +tpl.replace(self.request.host_url+'/', '')
+        newtpl = 'templates/project/' + tpl.replace(self.request.host_url + '/', '')
         extension = os.path.splitext(newtpl)[1]
 
         if not extension:
@@ -269,7 +287,7 @@ class MainHandler(BaseHandler):
         file_path = os.path.join(os.path.dirname(__file__), newtpl)
 
         try:
-            with open (file_path, "r") as myfile:
+            with open(file_path, "r") as myfile:
                 data = myfile.read()
                 cleaned_extension = extension.replace('.', '').lower()
                 mimetype = 'application/octet-stream'

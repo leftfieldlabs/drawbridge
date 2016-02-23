@@ -13,10 +13,10 @@ class SiteConfig(ndb.Model):
         return ndb.Key('SiteConfig', 'master_parent')
 
     @classmethod
-    def get_cached_xsrf_key(cls):
+    def get_cached_xsrf_key(cls, release_name):
         xsrf_key = memcache.get('xsrf_key')
         if not xsrf_key:
-            xsrf_key = cls.get_or_create().xsrf_key
+            xsrf_key = cls.get_or_create(release_name).xsrf_key
             memcache.set('xsrf_key', xsrf_key)
         return xsrf_key
 
@@ -42,8 +42,9 @@ class AuthorizedUser(ndb.Model):
 
     DENIED = 0
     APPROVED = 2
+    SITE_ADMIN = 3
 
-    STATUS_CHOICES = [DENIED, APPROVED]
+    STATUS_CHOICES = [DENIED, APPROVED, SITE_ADMIN]
 
     status = ndb.IntegerProperty(choices=STATUS_CHOICES, default=APPROVED)
 
@@ -59,6 +60,20 @@ class AuthorizedUser(ndb.Model):
             # Refresh
             return key.get()
 
+    @ndb.transactional
+    def toggle_admin(self):
+
+        if self.status == AuthorizedUser.DENIED:
+            return self.status
+
+        if self.status == AuthorizedUser.SITE_ADMIN:
+            self.status = AuthorizedUser.APPROVED
+
+        elif self.status == AuthorizedUser.APPROVED:
+            self.status = AuthorizedUser.SITE_ADMIN
+
+        self.put()
+        return self.status
 
     @classmethod
     def all(cls):
@@ -71,6 +86,11 @@ class AuthorizedUser(ndb.Model):
     @classmethod
     def get_by_email(cls, email):
         return cls.query(cls.email == email.lower(), ancestor=cls.ancestor()).get()
+
+    @classmethod
+    def is_admin(cls, user, release_name):
+        auth_user = cls.query(cls.email == user.email(), cls.release_name == release_name, cls.status == cls.SITE_ADMIN, ancestor=cls.ancestor()).get()
+        return auth_user is not None
 
     @classmethod
     def is_user_allowed(cls, user, release_name):

@@ -101,7 +101,7 @@ case "$COMMAND" in
         fi
 
         VERSION_NAME=$2
-        APP_NAME="vault-2"
+        APP_NAME="lflwebreview"
 
         echo ''
         echo "Targeting $CURRENT_DIR"

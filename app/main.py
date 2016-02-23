@@ -15,6 +15,8 @@ _ADMIN_ROUTES = [
 
     webapp2.Route('/admin/<key>/delete', handlers.DeleteKeyHandler, 'admin-delete-user'),
     webapp2.Route('/admin/<key>/delete/', handlers.DeleteKeyHandler, 'admin-delete-user'),
+    webapp2.Route('/admin/<key>/toggle-admin-status', handlers.ToggleAdminStatusHandler, 'adming-toggle-admin-status'),
+    webapp2.Route('/admin/<key>/toggle-admin-status/', handlers.ToggleAdminStatusHandler, 'adming-toggle-admin-status'),
 
     webapp2.Route('/admin/wild-card/<wild_card>/delete', handlers.DeleteWildCardHandler, 'admin-delete-wild-card'),
     webapp2.Route('/admin/wild-card/<wild_card>/delete/', handlers.DeleteWildCardHandler, 'admin-delete-wild-card'),
