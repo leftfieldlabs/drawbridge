@@ -31,7 +31,7 @@ fi
 case "$COMMAND" in
     'update')
         echo 'Attempting to update Vault...'
-        cd "$PROJECT_DIR" && git pull
+        cd "$PROJECT_DIR" && git checkout master && git pull
     ;;
     'local')
         echo 'Running local server...'
