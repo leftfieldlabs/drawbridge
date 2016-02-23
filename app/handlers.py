@@ -23,6 +23,11 @@ MIMETYPE_MAP = {
 }
 
 def get_release_name(request):
+    url = request.url
+
+    if "localhost" in url:
+        return "localhost"
+
     return request.url.split("-dot-")[0].replace('https://', '')
 
 def requires_xsrf_token(f):
