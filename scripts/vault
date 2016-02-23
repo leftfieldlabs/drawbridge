@@ -150,7 +150,7 @@ case "$COMMAND" in
         done
 
         echo ''
-        echo "Building app.yaml for $APP_NAME"
+        echo "Building app.yaml for $VERSION_NAME"
         echo ''
 
         cat "$PROJECT_DIR"/app.yaml.template | sed 's/__APP_NAME__/'"$APP_NAME"'/' | sed 's/__VERSION__/'"$VERSION_NAME"'/' > "$PROJECT_DIR"/app.yaml
