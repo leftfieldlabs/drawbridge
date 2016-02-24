@@ -12,6 +12,7 @@ SCRIPTS_DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 
 PROJECT_DIR=$( cd $SCRIPTS_DIR && cd .. && pwd )
 APP_DIR=$PROJECT_DIR/app
+APP_NAME="lflwebreview"
 CONTENT_DIR=$PROJECT_DIR/app/templates/project
 
 VERSION=1 # Default to 1
@@ -69,6 +70,65 @@ case "$COMMAND" in
 
         dev_appserver.py "$PROJECT_DIR"
     ;;
+    'create')
+
+        if [ ! $# -eq 2 ]; then
+            echo 'You did not provide an app id'; exit 1;
+        fi
+
+        echo "Clearing old project files"
+        echo ''
+
+        for item in "$CONTENT_DIR"/*
+        do
+            if [ -f "$item" ]; then
+                rm "$item"
+            else
+                rm -R "$item"
+            fi
+        done
+
+        VERSION_NAME=$2
+
+        # Rebuild index.html
+        echo "<!DOCTYPE html>
+            <html>
+                <head>
+                    <meta charset=\"utf-8\">
+                    <title>Starter page for $VERSION_NAME</title>
+                </head>
+                <body>
+                    <h1>$VERSION_NAME has been created</h1>
+                    <p>Go to <a href=\"/admin\">admin</a> to add users</p>
+                </body>
+            </html>" > "$CONTENT_DIR"/index.html
+
+        echo ''
+        echo "Building app.yaml for local app"
+        echo ''
+
+        cat "$PROJECT_DIR"/app.yaml.template | sed 's/__APP_NAME__/'"$APP_NAME"'/' | sed 's/__VERSION__/'"$VERSION_NAME"'/' > "$PROJECT_DIR"/app.yaml
+
+        echo ''
+        echo "Creating $VERSION_NAME"
+        echo ''
+
+        appcfg.py update $PROJECT_DIR
+
+        echo ''
+        echo "Cleaning up"
+        echo ''
+
+        echo ''
+        echo "Deleting previous app.yaml"
+        echo ''
+
+        rm -f "$PROJECT_DIR"/app.yaml
+
+        echo ''
+        echo "Visit your site at https://$VERSION_NAME-dot-$APP_NAME.appspot.com"
+        echo ''
+    ;;
     'help')
         echo ""
         echo "------------------------------ -=()=- ------------------------------"
@@ -103,7 +163,6 @@ case "$COMMAND" in
         fi
 
         VERSION_NAME=$2
-        APP_NAME="lflwebreview"
 
         echo ''
         echo "Targeting $CURRENT_DIR"
