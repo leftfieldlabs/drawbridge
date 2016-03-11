@@ -6,6 +6,12 @@ _AUTH_ROUTES = [
     webapp2.Route(r'/<:.*>', handlers.MainHandler),
 ]
 
+_API_ROUTES = [
+    webapp2.Route(r'/api/records/<release_name>', handlers.APIRecordHandler),
+    webapp2.Route(r'/api/records/<release_name>/', handlers.APIRecordHandler),
+]
+
+
 _ADMIN_ROUTES = [
     webapp2.Route('/admin', handlers.AdminHandler, 'admin-index'),
     webapp2.Route('/admin/', handlers.AdminHandler, 'admin-index'),
@@ -26,6 +32,6 @@ _ADMIN_ROUTES = [
 
 app = webapp2.WSGIApplication(
     routes=(
-        _ADMIN_ROUTES + _AUTH_ROUTES
+        _API_ROUTES + _ADMIN_ROUTES + _AUTH_ROUTES
     ),
 debug=True)
