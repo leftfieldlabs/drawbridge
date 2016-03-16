@@ -7,8 +7,12 @@ _AUTH_ROUTES = [
 ]
 
 _API_ROUTES = [
-    webapp2.Route(r'/api/records/<release_name>', handlers.APIRecordHandler),
-    webapp2.Route(r'/api/records/<release_name>/', handlers.APIRecordHandler),
+
+    webapp2.Route(r'/api/<release_name>', handlers.APIRecordXSRFHandler),
+    webapp2.Route(r'/api/<release_name>/', handlers.APIRecordXSRFHandler),
+
+    webapp2.Route(r'/api/<release_name>/records', handlers.APIRecordHandler),
+    webapp2.Route(r'/api/<release_name>/records/', handlers.APIRecordHandler),
 ]
 
 

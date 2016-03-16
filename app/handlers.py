@@ -26,7 +26,7 @@ MIMETYPE_MAP = {
 def get_release_name(request):
     url = request.url
 
-    if "localhost" in url:
+    if "localhost" in url or "127.0.0.1" in url:
         return "localhost"
 
     return request.url.split("-dot-")[0].replace('https://', '')
@@ -148,6 +148,10 @@ class BaseHandler(webapp2.RequestHandler):
 
 class APIBaseHandler(BaseHandler):
 
+    def error(self, status=500, message="An error occurred"):
+        self.response.status_int = status
+        self.render_response({"message": message})
+
     def success(self):
         self.render_response({"message": "Success"})
 
@@ -226,8 +230,16 @@ class ToggleAdminStatusHandler(BaseHandler):
         return self.success(message="Successfully toggled item")
 
 
+class APIRecordXSRFHandler(APIBaseHandler):
+
+    @requires_auth
+    def get(self, release_name):
+        return self.render_response(self.data)
+
 class APIRecordHandler(APIBaseHandler):
 
+    @requires_auth
+    @requires_xsrf_token
     def post(self, release_name):
         try:
             data = json.loads(self.request.body)
@@ -238,6 +250,7 @@ class APIRecordHandler(APIBaseHandler):
             record = models.Record.get_by_release_name(release_name)
             record.set(**data)
 
+    @requires_auth
     def get(self, release_name):
         record = models.Record.get_by_release_name(release_name)
         self.render_response(record.safe())
