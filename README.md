@@ -39,9 +39,6 @@ Run `vault update` from anywhere to get latest vault code
 Run `vault local` from directory with content to test locally. Keep in mind this does not currently refresh code changes. You'll need to re-run the command to get latest changes from your code.
 
 ## Using VaultJS
-A JS library to enable communication to your Vault instance
-
-### Usage
 If you are using Vault, this is a tool to help you store data persistently in a rush. Think of Parse or Firebase, but exclusively for Vault.
 
 ### Notes
