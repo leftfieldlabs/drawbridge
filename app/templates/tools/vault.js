@@ -151,7 +151,7 @@
         // Check for XSRF token
         if (this._xsrfToken === null) {
             this._getXSRFToken(function(data) {
-                this._xsrfToken = data['xsrf'][0]; // Not sure why this an array
+                this._xsrfToken = data['xsrf'];
                 this._save(callback);
             }.bind(this));
         } else {

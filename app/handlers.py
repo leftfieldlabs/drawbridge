@@ -104,7 +104,7 @@ class BaseHandler(webapp2.RequestHandler):
         else:
             self._xsrf_token = None
 
-        self.data['xsrf'] = self._xsrf_token,
+        self.data['xsrf'] = self._xsrf_token
         self.data['is_admin'] = users.is_current_user_admin() is True
 
 

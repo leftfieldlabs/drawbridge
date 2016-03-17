@@ -15,9 +15,12 @@
             var Grid = React.createClass({
 
                 render: function() {
-                    var rows = this.props.data.map(function(item, index) {
-                        return <p key={index}>{item.title}</p>
-                    })
+                    var rows = [];
+                    if (typeof this.props.data.items !== 'undefined') {
+                        rows = this.props.data.items.map(function(item, index) {
+                            return <p key={index}>{item.title}</p>
+                        })
+                    }
 
                     return (
                         <div>{rows}</div>
@@ -68,6 +71,11 @@
 
                 handleTitleSubmit: function(obj) {
                     var currentData = this.state.data;
+
+                    if (typeof currentData.items === 'undefined') {
+                        currentData.items = [];
+                    }
+
                     currentData.items.push(obj)
                     this.setState({data: currentData})
 
@@ -86,7 +94,7 @@
                 render: function() {
                     return (
                         <div>
-                            <Grid data={this.state.data.items} />
+                            <Grid data={this.state.data} />
                             <GridForm onTitleSubmit={this.handleTitleSubmit}/>
                         </div>
                     )
