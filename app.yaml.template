@@ -13,6 +13,15 @@ libraries:
 
 handlers:
 
+- url: /api/.*
+  script: app.main.app
+  secure: always
+
+- url: /__tools__
+  static_dir: app/templates/tools
+  secure: always
+  login: required
+
 - url: /.*
   script: app.main.app
   secure: always

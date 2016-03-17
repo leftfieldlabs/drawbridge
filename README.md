@@ -38,6 +38,30 @@ Run `vault update` from anywhere to get latest vault code
 ## Local server
 Run `vault local` from directory with content to test locally. Keep in mind this does not currently refresh code changes. You'll need to re-run the command to get latest changes from your code.
 
+## Using VaultJS
+If you are using Vault, this is a tool to help you store data persistently in a rush. Think of Parse or Firebase, but exclusively for Vault.
+
+### Including it in your project
+Simply add `<script src="/__tools__/vault.js"></script>` to the <head /> of your index.html and you're set.
+
+### Notes
+Just like Vault, this is not intended to be high performing. Nor can you store tons of data. When you save, the data object is serialized and stored in a GAE Datastore instance. There is currently a 1MB max size.
+
+### Example
+
+```javascript
+var vr = new Vault.Record("some-vault-project-name");
+vr.set('someKey', 2); // Not yet saved
+vr.set('someOtherKey', ["example", 2, "something"]); // Not yet saved
+vr.save(function(data) {
+    // on success, do something
+});
+
+console.log(vr.get('someKey'));
+
+```
+
+
 ## Notes
 * If a URI goes to a directory, like `http://someapp-dot-lflwebreview.appspot.com/something/`, it will attempt to load an index.html. It will not work with anything else
 

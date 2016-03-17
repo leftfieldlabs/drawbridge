@@ -32,6 +32,45 @@ class SiteConfig(ndb.Model):
         return config
 
 
+class Record(ndb.Model):
+    release_name = ndb.StringProperty(required=True, indexed=True)
+    data = ndb.JsonProperty()
+
+    @ndb.transactional
+    def set(self, *args, **kwargs):
+        for key, value in kwargs.iteritems():
+            self.data[key] = value
+        self.put()
+
+    def get(self, key):
+        return self.data.get(key)
+
+    def safe(self):
+        return {
+            "release_name": self.release_name,
+            "data": self.data
+        }
+
+    # @classmethod
+    # def get_by_release_name(cls, release_name):
+    #     return cls.query(cls.release_name == release_name, ancestor=cls.ancestor()).get()
+
+    @classmethod
+    def ancestor(cls):
+        return ndb.Key(cls.__class__.__name__, 'master_parent')
+
+    @classmethod
+    @ndb.transactional
+    def get_by_release_name(cls, release_name):
+        record = cls.query(cls.release_name == release_name, ancestor=cls.ancestor()).get()
+        if record is None:
+            record = cls(parent=cls.ancestor())
+            record.release_name = release_name
+            record.data = {}
+            record.put()
+        return record
+
+
 class AuthorizedUser(ndb.Model):
     release_name = ndb.StringProperty(required=True, indexed=True)
     email = ndb.StringProperty(required=True, indexed=True)
