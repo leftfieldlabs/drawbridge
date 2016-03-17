@@ -42,7 +42,7 @@ Run `vault local` from directory with content to test locally. Keep in mind this
 If you are using Vault, this is a tool to help you store data persistently in a rush. Think of Parse or Firebase, but exclusively for Vault.
 
 ### Including it in your project
-Simply add `<script src="/__tools__/vault.js"></script>` to the <head /> of your index.html and you're set.
+Simply add `<script src="/__tools__/vault.js"></script>` to the `<head />` of your index.html and you're set.
 
 ### Notes
 Just like Vault, this is not intended to be high performing. Nor can you store tons of data. When you save, the data object is serialized and stored in a GAE Datastore instance. There is currently a 1MB max size.
