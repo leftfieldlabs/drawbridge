@@ -151,18 +151,21 @@ case "$COMMAND" in
     ;;
     'deploy')
 
-        echo "Are you positive you want to deploy $CURRENT_DIR? [Y/n]"
-        read answer
-
-        if [ $answer == "n" ] || [ $answer == "N" ]; then
-            exit 1;
-        fi
-
-        if [ ! $# -eq 2 ]; then
+        if [ ! $# -ge 2 ]; then
             echo 'You did not provide an app id'; exit 1;
         fi
 
         VERSION_NAME=$2
+        BYPASS_WARNING=$3
+
+        if [ "$BYPASS_WARNING" != '--bypass' ]; then
+            echo "Are you positive you want to deploy $CURRENT_DIR? [Y/n]"
+            read answer
+
+            if [ $answer == "n" ] || [ $answer == "N" ]; then
+                exit 1;
+            fi
+        fi
 
         echo ''
         echo "Targeting $CURRENT_DIR"
