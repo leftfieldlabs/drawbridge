@@ -20,7 +20,9 @@ MIMETYPE_MAP = {
     'jpg': 'image/jpg',
     'mp4': 'video/mp4',
     'webm': 'video/webm',
-    'ogv': 'video/ogg'
+    'ogv': 'video/ogg',
+    'mtl': 'text/plain',
+    'obj': 'text/plain',
 }
 
 def get_release_name(request):
@@ -329,6 +331,10 @@ class MainHandler(BaseHandler):
         if not extension:
             extension = '.html'
             newtpl += 'index.html'
+
+        if not extension in ['.html', '.htm']:
+            # Strip query params if present
+            newtpl = newtpl.split('?')[0]
 
         file_path = os.path.join(os.path.dirname(__file__), newtpl)
 
