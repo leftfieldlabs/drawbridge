@@ -12,7 +12,7 @@ SCRIPTS_DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 
 PROJECT_DIR=$( cd $SCRIPTS_DIR && cd .. && pwd )
 APP_DIR=$PROJECT_DIR/app
-APP_NAME="lflwebreview"
+# APP_NAME="lflwebreview"
 CONTENT_DIR=$PROJECT_DIR/app/templates/project
 
 VERSION=1 # Default to 1
@@ -157,7 +157,7 @@ case "$COMMAND" in
             echo 'You did not provide an app id'; exit 1;
         fi
 
-        VERSION_NAME=$2
+        APP_NAME=$2
         BYPASS_WARNING=$3
 
         if [ "$BYPASS_WARNING" != '--bypass' ]; then
@@ -182,12 +182,7 @@ case "$COMMAND" in
             VERSION=0
         }
 
-        if [ $VERSION -eq 0 ]; then
-            VERSION=1
-        else
-            VERSION=$(cd "$CURRENT_DIR" && git rev-parse --short HEAD)
-        fi
-
+        VERSION=1
 
         echo ''
         echo "Clearing old project files"
@@ -216,16 +211,16 @@ case "$COMMAND" in
         done
 
         echo ''
-        echo "Building app.yaml for $VERSION_NAME"
+        echo "Building app.yaml for $APP_NAME"
         echo ''
 
         cat "$PROJECT_DIR"/app.yaml.template | sed 's/__APP_NAME__/'"$APP_NAME"'/' | sed 's/__VERSION__/'"$VERSION_NAME"'/' > "$PROJECT_DIR"/app.yaml
 
         echo ''
-        echo "Deploying $VERSION_NAME"
+        echo "Deploying $APP_NAME"
         echo ''
 
-        appcfg.py update $PROJECT_DIR
+        $APPCFG_PATH update $PROJECT_DIR
 
         echo ''
         echo "Cleaning up"
@@ -238,7 +233,7 @@ case "$COMMAND" in
         rm -f "$PROJECT_DIR"/app.yaml
 
         echo ''
-        echo "Visit your site at https://$VERSION_NAME-dot-$APP_NAME.appspot.com"
+        echo "Visit your site at https://$APP_NAME.appspot.com"
         echo ''
     ;;
     *)
