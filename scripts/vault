@@ -115,7 +115,7 @@ case "$COMMAND" in
         echo "Creating $VERSION_NAME"
         echo ''
 
-        appcfg.py update $PROJECT_DIR
+        $APPCFG_PATH update $PROJECT_DIR
 
         echo ''
         echo "Cleaning up"
