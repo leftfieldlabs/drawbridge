@@ -17,7 +17,9 @@ CONTENT_DIR=$PROJECT_DIR/app/templates/project
 
 VERSION=1 # Default to 1
 
-APPCFG_PATH="$(which appcfg.py)"
+if [ ! ${#APPCFG_PATH} -gt 0 ]; then
+    APPCFG_PATH="$(which appcfg.py)"
+fi
 
 if [ ! ${#APPCFG_PATH} -gt 0 ]; then
     echo "Doesn't look like you have Google App Engine SDK installed. Go to https://cloud.google.com/appengine/downloads?hl=en"; exit 1;
