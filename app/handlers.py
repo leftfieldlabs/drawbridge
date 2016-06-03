@@ -5,6 +5,7 @@ from google.appengine.ext import ndb
 from google.appengine.ext.webapp import template
 import functools
 import security
+import json
 import logging
 import models
 import cgi
@@ -19,13 +20,15 @@ MIMETYPE_MAP = {
     'jpg': 'image/jpg',
     'mp4': 'video/mp4',
     'webm': 'video/webm',
-    'ogv': 'video/ogg'
+    'ogv': 'video/ogg',
+    'mtl': 'text/plain',
+    'obj': 'text/plain',
 }
 
 def get_release_name(request):
     url = request.url
 
-    if "localhost" in url:
+    if "localhost" in url or "127.0.0.1" in url:
         return "localhost"
 
     return request.url.split("-dot-")[0].replace('https://', '')
@@ -85,6 +88,7 @@ class BaseHandler(webapp2.RequestHandler):
 
     def __init__(self, request, response):
         self.initialize(request, response)
+        self.data = {}
 
         user = users.get_current_user()
 
@@ -92,6 +96,7 @@ class BaseHandler(webapp2.RequestHandler):
 
         if user:
             key = models.SiteConfig.get_cached_xsrf_key(release_name)
+            self.data['nickname'] = user.nickname()
             self._xsrf_token = security.generate_token(key, user.email())
             #if self.app.config.get('using_angular', constants.DEFAULT_ANGULAR):
                 # AngularJS requires a JS readable XSRF-TOKEN cookie and will pass this
@@ -101,11 +106,9 @@ class BaseHandler(webapp2.RequestHandler):
         else:
             self._xsrf_token = None
 
-        self.data = {
-            'xsrf': self._xsrf_token,
-            'is_admin': users.is_current_user_admin() is True,
-            'nickname': user.nickname()
-        }
+        self.data['xsrf'] = self._xsrf_token
+        self.data['is_admin'] = users.is_current_user_admin() is True
+
 
     def success(self, status=200, message="Success!"):
         path = os.path.join(os.path.dirname(__file__), 'templates/success.html')
@@ -143,6 +146,20 @@ class BaseHandler(webapp2.RequestHandler):
         user = users.get_current_user()
         self.data['logout_url'] = users.create_logout_url(redirect_uri)
         self.response.out.write(template.render(path, self.data))
+
+
+class APIBaseHandler(BaseHandler):
+
+    def error(self, status=500, message="An error occurred"):
+        self.response.status_int = status
+        self.render_response({"message": message})
+
+    def success(self):
+        self.render_response({"message": "Success"})
+
+    def render_response(self, data):
+        self.response.headers['Content-Type'] = 'application/json'
+        self.response.out.write(json.dumps(data))
 
 
 class IndexHandler(BaseHandler):
@@ -213,6 +230,32 @@ class ToggleAdminStatusHandler(BaseHandler):
         except:
             return self.error()
         return self.success(message="Successfully toggled item")
+
+
+class APIRecordXSRFHandler(APIBaseHandler):
+
+    @requires_auth
+    def get(self, release_name):
+        return self.render_response(self.data)
+
+class APIRecordHandler(APIBaseHandler):
+
+    @requires_auth
+    @requires_xsrf_token
+    def post(self, release_name):
+        try:
+            data = json.loads(self.request.body)
+        except Exception, e:
+            print e
+            return self.error()
+        else:
+            record = models.Record.get_by_release_name(release_name)
+            record.set(**data)
+
+    @requires_auth
+    def get(self, release_name):
+        record = models.Record.get_by_release_name(release_name)
+        self.render_response(record.safe())
 
 
 class AdminHandler(BaseHandler):
@@ -288,6 +331,10 @@ class MainHandler(BaseHandler):
         if not extension:
             extension = '.html'
             newtpl += 'index.html'
+
+        if not extension in ['.html', '.htm']:
+            # Strip query params if present
+            newtpl = newtpl.split('?')[0]
 
         file_path = os.path.join(os.path.dirname(__file__), newtpl)
 

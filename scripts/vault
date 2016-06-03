@@ -17,7 +17,9 @@ CONTENT_DIR=$PROJECT_DIR/app/templates/project
 
 VERSION=1 # Default to 1
 
-APPCFG_PATH="$(which appcfg.py)"
+if [ ! ${#APPCFG_PATH} -gt 0 ]; then
+    APPCFG_PATH="$(which appcfg.py)"
+fi
 
 if [ ! ${#APPCFG_PATH} -gt 0 ]; then
     echo "Doesn't look like you have Google App Engine SDK installed. Go to https://cloud.google.com/appengine/downloads?hl=en"; exit 1;
@@ -113,7 +115,7 @@ case "$COMMAND" in
         echo "Creating $VERSION_NAME"
         echo ''
 
-        appcfg.py update $PROJECT_DIR
+        $APPCFG_PATH update $PROJECT_DIR
 
         echo ''
         echo "Cleaning up"
@@ -151,18 +153,21 @@ case "$COMMAND" in
     ;;
     'deploy')
 
-        echo "Are you positive you want to deploy $CURRENT_DIR? [Y/n]"
-        read answer
-
-        if [ $answer == "n" ] || [ $answer == "N" ]; then
-            exit 1;
-        fi
-
-        if [ ! $# -eq 2 ]; then
+        if [ ! $# -ge 2 ]; then
             echo 'You did not provide an app id'; exit 1;
         fi
 
         VERSION_NAME=$2
+        BYPASS_WARNING=$3
+
+        if [ "$BYPASS_WARNING" != '--bypass' ]; then
+            echo "Are you positive you want to deploy $CURRENT_DIR? [Y/n]"
+            read answer
+
+            if [ $answer == "n" ] || [ $answer == "N" ]; then
+                exit 1;
+            fi
+        fi
 
         echo ''
         echo "Targeting $CURRENT_DIR"
