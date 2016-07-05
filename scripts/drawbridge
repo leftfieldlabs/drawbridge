@@ -12,7 +12,6 @@ SCRIPTS_DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 
 PROJECT_DIR=$( cd $SCRIPTS_DIR && cd .. && pwd )
 APP_DIR=$PROJECT_DIR/app
-APP_NAME="lflwebreview"
 CONTENT_DIR=$PROJECT_DIR/app/templates/project
 
 VERSION=1 # Default to 1
@@ -33,7 +32,7 @@ fi
 
 case "$COMMAND" in
     'update')
-        echo 'Attempting to update Vault...'
+        echo 'Attempting to update Drawbridge...'
         cd "$PROJECT_DIR" && git checkout master && git pull
     ;;
     'local')
@@ -133,32 +132,33 @@ case "$COMMAND" in
     ;;
     'help')
         echo ""
-        echo "------------------------------ -=()=- ------------------------------"
+        echo "------------------------------ -=T\__/T=- ------------------------------"
         echo ""
         echo ""
         echo ""
-        echo "Welcome Vault Dweller!"
+        echo "Welcome errant Knight!"
         echo ""
-        echo "To update Vault, enter: 'vault update'"
+        echo "To update Drawbridge, enter: 'drawbridge update'"
         echo ""
-        echo "To deploy, simply go to the folder of files you wish to deploy and enter: "
+        echo "To deploy, simply go to the folder of files you wish to deploy and execute: "
         echo ""
-        echo "'vault deploy project-name-here'"
+        echo "'drawbridge deploy project-name-here app-id-here'"
         echo ""
-        echo "Need more help? Email sebastian@leftfieldlabs.com"
+        echo "Need more help? Visit https://github.com/leftfieldlabs/drawbridge"
         echo ""
         echo ""
-        echo "------------------------------ -=()=- ------------------------------"
+        echo "------------------------------ -=T\__/T=- ------------------------------"
         echo ""
     ;;
     'deploy')
 
-        if [ ! $# -ge 2 ]; then
-            echo 'You did not provide an app id'; exit 1;
+        if [ ! $# -ge 3 ]; then
+            echo 'You did not provide all necessary arguements; see `drawbridge help`'; exit 1;
         fi
 
         VERSION_NAME=$2
-        BYPASS_WARNING=$3
+        APP_NAME=$3
+        BYPASS_WARNING=$4
 
         if [ "$BYPASS_WARNING" != '--bypass' ]; then
             echo "Are you positive you want to deploy $CURRENT_DIR? [Y/n]"
@@ -242,6 +242,6 @@ case "$COMMAND" in
         echo ''
     ;;
     *)
-        echo "Sorry, this command was not recognized. Type 'vault help'."
+        echo "Sorry, this command was not recognized. Type 'drawbridge help'."
     ;;
 esac

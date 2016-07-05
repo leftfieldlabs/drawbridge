@@ -9,4 +9,4 @@ echo ''
 echo "Installing to /usr/local/bin"
 echo ''
 
-ln -s "$SCRIPTS_DIR"/vault /usr/local/bin/vault
+ln -s "$SCRIPTS_DIR"/drawbridge /usr/local/bin/drawbridge
