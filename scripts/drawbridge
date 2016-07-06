@@ -25,7 +25,7 @@ if [ ! ${#APPCFG_PATH} -gt 0 ]; then
 fi
 
 if [ ! $# -gt 0 ]; then
-    echo 'You did not provide a command'; exit 1;
+    echo 'You did not provide a command; see `drawbridge help`'; exit 1;
 else
     COMMAND=$1
 fi
@@ -142,7 +142,7 @@ case "$COMMAND" in
         echo ""
         echo "To deploy, simply go to the folder of files you wish to deploy and execute: "
         echo ""
-        echo "'drawbridge deploy project-name-here app-id-here'"
+        echo "'drawbridge deploy app-id-here project-name-here'"
         echo ""
         echo "Need more help? Visit https://github.com/leftfieldlabs/drawbridge"
         echo ""
@@ -156,8 +156,8 @@ case "$COMMAND" in
             echo 'You did not provide all necessary arguements; see `drawbridge help`'; exit 1;
         fi
 
-        VERSION_NAME=$2
-        APP_NAME=$3
+        APP_NAME=$2 # Base space for projects
+        VERSION_NAME=$3 # Upto 10 versions per App ID
         BYPASS_WARNING=$4
 
         if [ "$BYPASS_WARNING" != '--bypass' ]; then
