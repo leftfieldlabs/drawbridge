@@ -6,6 +6,7 @@ from google.appengine.ext.webapp import template
 import functools
 import security
 import json
+import string
 import logging
 import models
 import cgi
@@ -326,10 +327,18 @@ class MainHandler(BaseHandler):
 
         tpl = self.request.uri
         newtpl = 'templates/project/' + tpl.replace(self.request.host_url + '/', '')
-        extension = os.path.splitext(newtpl)[1]
+
+        parts = newtpl.split(os.extsep)
+
+        extension = None
+
+        if len(parts) > 1:
+            extension = "." + parts[-1:][0].split('?')[0]
 
         if not extension:
             extension = '.html'
+            if '/' != newtpl[-1:][0]:
+                newtpl += '/'
             newtpl += 'index.html'
 
         if not extension in ['.html', '.htm']:
@@ -342,7 +351,7 @@ class MainHandler(BaseHandler):
             with open(file_path, "r") as myfile:
                 data = myfile.read()
                 cleaned_extension = extension.replace('.', '').lower()
-                mimetype = 'application/octet-stream'
+                mimetype = 'text/plain'
                 if cleaned_extension in MIMETYPE_MAP:
                     mimetype = MIMETYPE_MAP[cleaned_extension]
                 self.response.headers["Content-Type"] = mimetype
