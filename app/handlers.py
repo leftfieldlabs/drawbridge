@@ -24,6 +24,7 @@ MIMETYPE_MAP = {
     'ogv': 'video/ogg',
     'mtl': 'text/plain',
     'obj': 'text/plain',
+    'svg': 'image/svg+xml',
 }
 
 def get_release_name(request):
