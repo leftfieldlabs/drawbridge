@@ -1,7 +1,5 @@
-# Vault
+# Drawbridge
 A tool to deploy a static site to a fully protected GAE instance
-
-![Vault Tect](fallout-boy.png)
 
 ## What is this for?
 Have a static site or just an HTML page you wanna show a client? You can easily push content to a remote, secure and whitelisted site.
@@ -29,23 +27,23 @@ Now manages all projects under a single GAE App ID. Each project is considered a
 1. Navigate to your newly cloned folder and run `sudo ./scripts/install`
 
 ## Using and deploying
-1. From inside the directory with all your site assets, run `vault deploy [project name]`
+1. From inside the directory with all your site assets, run `drawbridge deploy [project name]`
 1. Visit `[project name]-dot-lflwebreview.appspot.com` to see your site
 
 ## Updating
-Run `vault update` from anywhere to get latest vault code
+Run `drawbridge update` from anywhere to get latest vault code
 
 ## Local server
-Run `vault local` from directory with content to test locally. Keep in mind this does not currently refresh code changes. You'll need to re-run the command to get latest changes from your code.
+Run `drawbridge local` from directory with content to test locally. Keep in mind this does not currently refresh code changes. You'll need to re-run the command to get latest changes from your code.
 
 ## Using VaultJS
-If you are using Vault, this is a tool to help you store data persistently in a rush. Think of Parse or Firebase, but exclusively for Vault.
+If you are using Vault, this is a tool to help you store data persistently in a rush. Think of Parse or Firebase, but exclusively for Drawbridge.
 
 ### Including it in your project
 Simply add `<script src="/__tools__/vault.js"></script>` to the `<head />` of your index.html and you're set.
 
 ### Notes
-Just like Vault, this is not intended to be high performing. Nor can you store tons of data. When you save, the data object is serialized and stored in a GAE Datastore instance. There is currently a 1MB max size.
+Just like Drawbridge, this is not intended to be high performing. Nor can you store tons of data. When you save, the data object is serialized and stored in a GAE Datastore instance. There is currently a 1MB max size.
 
 ### Example
 
