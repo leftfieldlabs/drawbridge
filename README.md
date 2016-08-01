@@ -27,8 +27,8 @@ Now manages all projects under a single GAE App ID. Each project is considered a
 1. Navigate to your newly cloned folder and run `sudo ./scripts/install`
 
 ## Using and deploying
-1. From inside the directory with all your site assets, run `drawbridge deploy [project name]`
-1. Visit `[project name]-dot-lflwebreview.appspot.com` to see your site
+1. From inside the directory with all your site assets, run `drawbridge deploy [app-id] [release]`
+1. Visit `[release]-dot-[app-id].appspot.com` to see your site
 
 ## Updating
 Run `drawbridge update` from anywhere to get latest vault code
