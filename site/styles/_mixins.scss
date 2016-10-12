@@ -1,0 +1,56 @@
+
+/* Breakpoints */
+
+
+$break-small: 320px;
+$break-med: 769px;
+$break-large: 1200px;
+
+
+// keyframes mixin
+@mixin keyframes($name) {
+  @-webkit-keyframes #{$name} {
+    @content;
+  }
+  @-moz-keyframes #{$name} {
+    @content;
+  }
+  @-ms-keyframes #{$name} {
+    @content;
+  }
+  @keyframes #{$name} {
+    @content;
+  }
+}
+
+// box-shadow mixin
+@mixin box-shadow($top, $left, $blur, $color, $inset: false) {
+  @if $inset {
+    -webkit-box-shadow:inset $top $left $blur $color;
+    -moz-box-shadow:inset $top $left $blur $color;
+    box-shadow:inset $top $left $blur $color;
+  } @else {
+    -webkit-box-shadow: $top $left $blur $color;
+    -moz-box-shadow: $top $left $blur $color;
+    box-shadow: $top $left $blur $color;
+  }
+}
+
+// vendor prefixes
+@mixin prefix($property, $values...) {
+  -webkit-#{$property}: #{$values};
+     -moz-#{$property}: #{$values};
+      -ms-#{$property}: #{$values};
+       -o-#{$property}: #{$values};
+          #{$property}: #{$values};
+}
+
+
+// background images
+@mixin bg-image($url) {
+  background-image: url($url);
+  background-size: cover;
+  background-position: center;
+  height: 100%;
+  width: 100%;
+}

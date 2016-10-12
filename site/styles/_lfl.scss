@@ -1,0 +1,22 @@
+.lfl {
+
+    .lfl-logo {
+        @include bg-image('../images/lfl_logo_2x.png');
+        background-size: contain;
+        background-repeat: no-repeat;
+        margin: 0 auto;
+        height: 101px;
+        width: 78px;
+    }
+}
+
+@media screen and (max-width: $break-med) {
+
+    .lfl {
+
+        .lfl-logo,
+        .lfl-logo + .subsection {
+            margin-bottom: 20px;
+        }
+    }
+}

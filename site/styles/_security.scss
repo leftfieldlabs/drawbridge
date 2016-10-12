@@ -1,0 +1,42 @@
+.security {
+    h4 {
+        font-weight: bold;
+    }
+
+    h4,
+    .subsection {
+        max-width: 390px;
+        margin: 20px 0;
+    }
+
+    img {
+        margin: 0 auto;
+    }
+}
+
+
+@media screen and (max-width: $break-med) {
+
+    .security {
+
+        .two-col .subheader {
+            text-align: center;
+        }
+
+        .two-col:first-of-type {
+            margin-top: 0;
+        }
+
+        .two-col:last-of-type {
+            margin-top: 40px;
+        }
+
+        h2,
+        h4,
+        .subsection {
+            width: 90%;
+            margin: 20px auto;
+            text-align: center;
+        }
+    }
+}

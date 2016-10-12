@@ -1,0 +1,126 @@
+body {
+    margin: 0;
+}
+
+.blue-bg {
+    background-color: $dark-blue;
+
+    .subsection {
+        color: $white;
+    }
+}
+
+.dark-blue-bg {
+    background-color: $darkest-blue;
+}
+
+.yellow-bg {
+    background-color: $yellow;
+}
+
+.inner-container {
+    max-width: 100%;
+    width: 1000px;
+    margin: 0 auto;
+    position: relative;
+}
+
+section {
+    padding: 80px 15px;
+    border-bottom: 1px solid $lightest-gray-1;
+
+    h2 {
+        margin-top: 5px;
+        font-size: $font-size-1;
+        letter-spacing: 1.25px;
+    }
+
+    p {
+        margin: 0 auto;
+        text-align: center;
+    }
+}
+
+
+section:last-of-type {
+    border-bottom: none;
+}
+
+
+.subheader {
+    max-width: 650px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.subsection {
+    max-width: 530px;
+    margin: 20px auto;
+    text-align: center;
+}
+
+.two-col .subheader,
+.two-col .subsection {
+    text-align: left;
+}
+
+.feature-container {
+    margin-top: 40px;
+
+    p {
+        padding: 0 20px;
+    }
+}
+
+.instruction-container {
+
+    p,
+    .subsection,
+    .code-container,
+    .subheader {
+        text-align: left;
+        width: 310px;
+    }
+
+    .subheader {
+        margin: 20px auto;
+    }
+}
+
+.cta {
+    margin-top: 40px;
+}
+
+@media screen and (max-width: $break-med) {
+
+
+    section {
+        padding: 40px 15px;
+    }
+
+    section h1, section h2 {
+        text-align: center;
+        font-size: $font-size-2;
+        margin-bottom: 30px;
+    }
+
+    .feature-container {
+
+        p {
+            padding: 0;
+        }
+    }
+
+    p,
+    .subsection,
+    .code-container,
+    .subheader {
+        text-align: center;
+        width: 90%;
+        margin: 0 auto;
+    }
+
+    .subheader {
+        margin-bottom: 30px;
+    }
+}

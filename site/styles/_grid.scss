@@ -1,0 +1,48 @@
+.two-col,
+.three-col,
+.four-col {
+    display: inline-block;
+    vertical-align: top;
+    margin: 0 auto;
+    text-align: center;
+    box-sizing: border-box;
+}
+
+.two-col {
+    width: 49%;
+}
+
+.three-col {
+    width: 32%;
+}
+
+.four-col {
+    width: 24%;
+}
+
+.desktop {
+    display: block;
+}
+
+.mobile {
+    display: none;
+}
+
+
+@media screen and (max-width: $break-med) {
+
+    .two-col,
+    .three-col,
+    .four-col {
+        display: block;
+        width: 90%;
+    }
+
+    .desktop {
+        display: none;
+    }
+
+    .mobile {
+        display: block;
+    }
+}

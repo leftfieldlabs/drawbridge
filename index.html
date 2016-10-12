@@ -1,10 +1,129 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <title>Drawbridge</title>
-  </head>
-  <body>
-    <h1>Some content here</h1>
-  </body>
+    <head>
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="initial-scale=1, minimum-scale=1, width=device-width">
+      <meta name="description" content="{">
+      <title>Drawbridge</title>
+
+      <link rel="icon" href="">
+      <link href='https://fonts.googleapis.com/css?family=Noto+Sans:400,700' rel='stylesheet' type='text/css'>
+      <link rel="stylesheet" type="text/css" href="site/styles/main.css"/>
+    </head>
+
+    <body>
+
+        <header>
+            <div class="header-bg"></div>
+            <div class="logo"></div>
+            <h1 id="site-name">Drawbridge</h1>
+        </header>
+
+        <!-- Introducing Drawbridge -->
+        <section class="introduction">
+            <div class="bg-hero"></div>
+            <div class="inner-container">
+                <h2>Deploy static sites with a single command</h2>
+                <p class="subsection">Drawbridge is a command line tool built to enable developers to quickly deploy static sites to whitelisted, SSL protected, dynamically created domains. Share with the whole company. Or your team. Or just the board game club.</p>
+
+                <!-- TODO update links -->
+                <div class="two-col instruction-container">
+                    <div class="btn-container">
+                        <a class="button" href="https://github.com/leftfieldlabs/vault" target="_blank">View source</a>
+                    </div>
+                </div>
+
+                <div class="two-col instruction-container">
+                    <h4 class="subheader">Install Drawbridge</h4>
+                    <p>1. Clone repo</p>
+                    <!-- TODO determine correct install commands -->
+                    <p>2. Navigate to your newly cloned folder and run:</p>
+                    <div class="code-container">
+                        <code>sudo ./scripts/install</code>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- END Introducing Drawbridge -->
+
+        <!-- How it works -->
+        <section class="how-it-works">
+            <div class="inner-container">
+                <h2 class="subheader">How it works</h2>
+                <p class="subsection">Lorem ipsum dolor sit amet, consectatur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectatur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.<p>
+                <div class="how-it-works-diagram">
+                    <img class="diagram-drawbridge-placeholder" src="./site/images/drawbridge_logo_diagram_closed_2x.png" />
+                    <img class="diagram-drawbridge" src="./site/images/drawbridge_logo_diagram_2x.gif"/>
+                </div>
+            </div>
+        </section>
+        <!-- END How it works -->
+
+        <!-- Features -->
+        <section class="yellow-bg">
+            <div class="inner-container">
+                <h2 class="subheader">Features that support the way you work</h2>
+
+                <div class="feature-container">
+                    <div class="four-col">
+                        <h4>Supports Multiple Sites and Projects</h4>
+                        <p>Subdomain based on project name, like [some-project].lfldrawbridge.com/</p>
+                    </div>
+                    <div class="four-col">
+                        <h4>SSL Support</h4>
+                        <p>Protect directories containing static asset files behind SSL.</p>
+                    </div>
+                    <div class="four-col">
+                        <h4>Admin Control</h4>
+                        <p>Enables/disables access to files through Google authentication, including assets like CSS and Js.</p>
+                    </div>
+                    <div class="four-col">
+                        <h4>Integrate with CI</h4>
+                        <p>Setup automated deployment using your CI server.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- END Features -->
+
+        <!-- Built for Security -->
+        <section class="security">
+            <div class="inner-container">
+                <div class="two-col">
+                    <img class="desktop" src="./site/images/security-graphic_2x.png" height=249/>
+                    <img class="mobile" src="./site/images/security-graphic_2x.png" height=125/>
+                </div>
+                <div class="two-col">
+                    <h2 class="subheader">Built for security</h2>
+                    <h4 class="subheader">Share with your company, your team, or only with the people who need to know.</h4>
+                    <p class="subsection">By providing whitelist managed site deployment, Drawbridge allows you to limit access to team members or clients securely, without sharing with the entire world. User authentication is based on Google accounts.</p>
+                </div>
+            </div>
+        </section>
+        <!-- END Built for Security -->
+
+        <!-- Created by LFL -->
+        <section class="blue-bg lfl">
+            <div class="inner-container">
+                <div class="lfl-logo"></div>
+                <p class="subsection">Left Field Labs is a digital marketing agency / development team who believes in making the internet a better place to write code. Drawbridge is happily released open source to help streamline web development, and improve the lives of devs.</p>
+                <p class="subsection cta"><a class="button" href="https://www.leftfieldlabs.com" target="_blank">Visit Left Field Labs</a></p>
+            </div>
+        </section>
+        <!-- END Created by LFL -->
+
+        <footer class="dark-blue-bg">
+            <div class="inner-container">
+                <!-- TODO update links -->
+                <p class="small">Drawbridge is made with <img src="./site/images/love_2x.png" height=10 /> by <a href="https://www.leftfieldlabs.com" target="_blank">Left Field Labs</a> as open source and licensed under a <a href="#" target="_blank">creative commons agreement</a> as is. For questions please contact <a href="mailto:drawbridge@leftfieldlabs.com">drawbridge@leftfieldlabs.com</a>.</p>
+            </div>
+        </footer>
+    </body>
+    <script type="text/javascript" src="./site/scripts/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            new Drawbridge();
+        });
+    </script>
 </html>

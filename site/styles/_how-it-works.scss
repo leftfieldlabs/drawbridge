@@ -1,0 +1,63 @@
+.how-it-works-diagram {
+    @include bg-image('../images/diagram_2x.png');
+    width: 870px;
+    height: 251px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    margin: 30px auto 0;
+    max-width: 100%;
+}
+
+.diagram-drawbridge-placeholder,
+.diagram-drawbridge {
+    height: 140px;
+    position: absolute;
+    left: 50%;
+    margin-left: -93px;
+    @include prefix(transition, all 250ms ease-in-out);
+}
+
+.diagram-drawbridge-placeholder {
+    opacity: 1;
+
+    &.hide {
+        opacity: 0;
+        z-index: 0;
+    }
+}
+
+.diagram-drawbridge {
+    opacity: 0;
+
+    &.active {
+        opacity: 1;
+        z-index: 1;
+    }
+}
+
+
+@media screen and (max-width: $break-med) {
+
+    .how-it-works-diagram {
+        @include bg-image('../images/diagram_vertical_2x.png');
+        height: 687px;
+        width: 300px;
+    }
+
+    .diagram-drawbridge-placeholder,
+    .diagram-drawbridge {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        margin-left: -80px;
+        height: 120px;
+    }
+}
+
+@media screen and (max-width: 420px) {
+
+    .diagram-drawbridge-placeholder,
+    .diagram-drawbridge {
+        top: 52%;
+    }
+}

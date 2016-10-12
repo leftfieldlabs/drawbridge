@@ -1,0 +1,13 @@
+footer {
+    padding: 35px 0;
+    position: absolute;
+    width: 100%;
+    box-sizing: border-box;
+}
+footer p {
+    color: $white;
+    max-width: 100%;
+    width: 1000px;
+    margin: 0 auto;
+    text-align: center;
+}
