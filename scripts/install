@@ -1,7 +1,7 @@
 #!/bin/sh
 
 CURRENT_DIR=$( echo $PWD )
-PROJECT_DIR=/usr/local/.drawbridge
+PROJECT_DIR=~/.drawbridge
 SCRIPTS_DIR=$PROJECT_DIR/scripts
 APP_DIR=$PROJECT_DIR/app
 COMMAND=/usr/local/bin/drawbridge
@@ -19,8 +19,10 @@ echo ''
 echo "Cloning repo..."
 echo ''
 
-mkdir "$PROJECT_DIR"
-git clone git@github.com:leftfieldlabs/drawbridge.git "$PROJECT_DIR"
+if [ ! -d "$PROJECT_DIR" ]; then
+    mkdir "$PROJECT_DIR"
+    git clone git@github.com:leftfieldlabs/drawbridge.git "$PROJECT_DIR"
+fi
 
 echo ''
 echo "Installing to /usr/local/bin"
