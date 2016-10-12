@@ -1,12 +1,29 @@
 #!/bin/sh
 
 CURRENT_DIR=$( echo $PWD )
-SCRIPTS_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
-PROJECT_DIR=$( cd $SCRIPTS_DIR && cd .. && pwd )
+PROJECT_DIR=/usr/local/.drawbridge
+SCRIPTS_DIR=$PROJECT_DIR/scripts
 APP_DIR=$PROJECT_DIR/app
+COMMAND=/usr/local/bin/drawbridge
+
+echo ''
+echo 'Checking for existing install...'
+echo ''
+
+if [ -f "$COMMAND" ]; then
+    echo 'Drawbridge already installed; run `drawbridge update`'
+    exit 1;
+fi
+
+echo ''
+echo "Cloning repo..."
+echo ''
+
+mkdir "$PROJECT_DIR"
+git clone git@github.com:leftfieldlabs/drawbridge.git "$PROJECT_DIR"
 
 echo ''
 echo "Installing to /usr/local/bin"
 echo ''
 
-ln -s "$SCRIPTS_DIR"/drawbridge /usr/local/bin/drawbridge
+ln -s "$SCRIPTS_DIR"/drawbridge "$COMMAND"
