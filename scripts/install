@@ -1,10 +1,15 @@
 #!/bin/sh
 
+# This installs Drawbridge to ~/.drawbridge and then symlinks it to /usr/local/bin/drawbridge
+# There is currently no other way to change this directory without manually changing it yourself
+
 CURRENT_DIR=$( echo $PWD )
 PROJECT_DIR=~/.drawbridge
 SCRIPTS_DIR=$PROJECT_DIR/scripts
 APP_DIR=$PROJECT_DIR/app
 COMMAND=/usr/local/bin/drawbridge
+
+dev_appserver.py -h >/dev/null 2>&1 || { echo >&2 "\nIt looks like the Google App Engine SDK isn't installed. You're going to need it: https://developers.google.com/appengine/downloads\n"; exit 1; }
 
 echo ''
 echo 'Checking for existing install...'
@@ -16,7 +21,7 @@ if [ -f "$COMMAND" ]; then
 fi
 
 echo ''
-echo "Cloning repo..."
+echo "Cloning repo to $PROJECT_DIR..."
 echo ''
 
 if [ ! -d "$PROJECT_DIR" ]; then
@@ -25,7 +30,7 @@ if [ ! -d "$PROJECT_DIR" ]; then
 fi
 
 echo ''
-echo "Installing to /usr/local/bin"
+echo "Creating symlink to /usr/local/bin"
 echo ''
 
 ln -s "$SCRIPTS_DIR"/drawbridge "$COMMAND"
