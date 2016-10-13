@@ -306,11 +306,13 @@ section.introduction {
   top: 0;
   left: 0; }
 
-code {
+.code {
   border: 1px solid #fff;
   background-color: #fff;
   color: #6c6e7a;
-  padding: 10px 15px; }
+  padding: 10px 15px;
+  max-width: 75%;
+  margin: 0 auto; }
 
 .code-container {
   margin: 25px auto 20px;
@@ -340,6 +342,16 @@ code {
   .instruction-container:last-of-type h4 {
     margin-top: 0; }
 
+.introduction .instructions {
+  text-align: center;
+  margin: 0 auto;
+  overflow-wrap: break-word; }
+  .introduction .instructions .code + div {
+    margin-top: 40px; }
+
+@media screen and (max-width: 910px) {
+  .code {
+    font-size: 14px; } }
 @media screen and (max-width: 769px) {
   section.introduction .subsection {
     margin-bottom: 30px; }
@@ -353,6 +365,10 @@ code {
     text-align: center;
     width: 90%;
     margin: 0 auto 30px; }
+
+  section.introduction .code {
+    font-size: 13px;
+    max-width: 100%; }
 
   .two-col.instruction-container,
   .instruction-container p, .instruction-container .subsection, .instruction-container .code-container, .instruction-container .subheader {

@@ -25,11 +25,13 @@ section.introduction {
     left: 0;
 }
 
-code {
+.code {
     border: 1px solid $white;
     background-color: $white;
     color: $code-gray;
     padding: 10px 15px;
+    max-width: 75%;
+    margin: 0 auto;
 }
 
 .code-container {
@@ -76,6 +78,22 @@ code {
     }
 }
 
+.introduction .instructions {
+  text-align: center;
+  margin: 0 auto;
+  overflow-wrap: break-word;
+
+  .code + div {
+    margin-top: 40px;
+  }
+}
+
+@media screen and (max-width: 910px) {
+    .code {
+      font-size: 14px;
+    }
+}
+
 @media screen and (max-width: $break-med) {
 
     section.introduction .subsection {
@@ -92,6 +110,11 @@ code {
         text-align: center;
         width: 90%;
         margin: 0 auto 30px;
+    }
+
+    section.introduction .code {
+      font-size: 13px;
+      max-width: 100%;
     }
 
     .two-col.instruction-container,
