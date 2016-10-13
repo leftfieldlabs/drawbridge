@@ -36,11 +36,11 @@ Run `drawbridge update` from anywhere to get latest vault code
 ## Local server
 Run `drawbridge local` from directory with content to test locally. Keep in mind this does not currently refresh code changes. You'll need to re-run the command to get latest changes from your code.
 
-## Using VaultJS
-If you are using Vault, this is a tool to help you store data persistently in a rush. Think of Parse or Firebase, but exclusively for Drawbridge.
+## Using DrawbridgeJS
+If you are using Drawbridge, this is a tool to help you store data persistently in a rush. Think of Parse or Firebase, but exclusively for Drawbridge.
 
 ### Including it in your project
-Simply add `<script src="/__tools__/vault.js"></script>` to the `<head />` of your index.html and you're set.
+Simply add `<script src="/__tools__/drawbridge.js"></script>` to the `<head />` of your index.html and you're set.
 
 ### Notes
 Just like Drawbridge, this is not intended to be high performing. Nor can you store tons of data. When you save, the data object is serialized and stored in a GAE Datastore instance. There is currently a 1MB max size.
@@ -48,20 +48,20 @@ Just like Drawbridge, this is not intended to be high performing. Nor can you st
 ### Example
 
 ```javascript
-var vr = new Vault.Record("some-vault-project-name");
-vr.set('someKey', 2); // Not yet saved
-vr.set('someOtherKey', ["example", 2, "something"]); // Not yet saved
-vr.save(function(data) {
+var dr = new Drawbridge.Record("some-drawbridge-project-name");
+dr.set('someKey', 2); // Not yet saved
+dr.set('someOtherKey', ["example", 2, "something"]); // Not yet saved
+dr.save(function(data) {
     // on success, do something
 });
 
-console.log(vr.get('someKey'));
+console.log(dr.get('someKey'));
 
 ```
 
 
 ## Notes
-* If a URI goes to a directory, like `http://someapp-dot-lflwebreview.appspot.com/something/`, it will attempt to load an index.html. It will not work with anything else
+* If a URI goes to a directory, like `http://someapp-dot-something.appspot.com/something/`, it will attempt to load an index.html. It will not work with anything else
 
 ## Feature requests
 If you need a new feature, please create an issue or (better yet) submit a pull request.

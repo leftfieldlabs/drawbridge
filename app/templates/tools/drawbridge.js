@@ -2,7 +2,7 @@
  * Copyright 2016-present, Left Field Labs, Inc.
  * All rights reserved.
  *
- * @providesModule Vault
+ * @providesModule Drawbridge
  * @author Sebastian Lemery
  */
 
@@ -12,12 +12,12 @@
 
     /**
     * Create a new instance of Record
-    * @param {string} releaseName - The name of your Vault project (usually top line of app.yaml)
+    * @param {string} releaseName - The name of your Drawbridge project (usually top line of app.yaml)
     * @constructor
     */
     function Record(releaseName) {
         if (typeof releaseName === 'undefined') {
-            console.error("Invalid releaseName supplied to Vault.Record. Please provide a string.");
+            console.error("Invalid releaseName supplied to Drawbridge.Record. Please provide a string.");
             return;
         }
         this._releaseName = releaseName;
@@ -71,7 +71,7 @@
             }
         });
         r.addEventListener("error", function(e) {
-            console.error("vault-js could not connect to server: " + e);
+            console.error("drawbridge-js could not connect to server: " + e);
         });
         r.send(null);
     };
@@ -100,7 +100,7 @@
             }
         });
         r.addEventListener("error", function(e) {
-            console.error("vault-js could not connect to server: " + e);
+            console.error("drawbridge-js could not connect to server: " + e);
         });
         r.send(JSON.stringify(data));
     };
@@ -159,7 +159,7 @@
         }
     };
 
-    global.Vault = {
+    global.Drawbridge = {
         Record: Record
     };
 
