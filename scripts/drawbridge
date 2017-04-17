@@ -16,13 +16,7 @@ CONTENT_DIR=$PROJECT_DIR/app/templates/project
 
 VERSION=1 # Default to 1
 
-if [ ! ${#APPCFG_PATH} -gt 0 ]; then
-    APPCFG_PATH="$(which appcfg.py)"
-fi
-
-if [ ! ${#APPCFG_PATH} -gt 0 ]; then
-    echo "Doesn't look like you have Google App Engine SDK installed. Go to https://cloud.google.com/appengine/downloads?hl=en"; exit 1;
-fi
+gcloud -h >/dev/null 2>&1 || { echo >&2 "\nIt looks like the Google App Engine SDK isn't installed. You're going to need it: https://developers.google.com/appengine/downloads\n"; exit 1; }
 
 if [ ! $# -gt 0 ]; then
     echo 'You did not provide a command; see `drawbridge help`'; exit 1;
@@ -114,7 +108,9 @@ case "$COMMAND" in
         echo "Creating $VERSION_NAME"
         echo ''
 
-        $APPCFG_PATH update $PROJECT_DIR
+#        $APPCFG_PATH update $PROJECT_DIR
+#        gcloud config set project "$APP_NAME"
+#        gcloud app deploy "$PROJECT_DIR"/app.yaml
 
         echo ''
         echo "Cleaning up"
@@ -153,11 +149,11 @@ case "$COMMAND" in
     'deploy')
 
         if [ ! $# -ge 3 ]; then
-            echo 'You did not provide all necessary arguements; see `drawbridge help`'; exit 1;
+            echo 'You did not provide all necessary arguments; see `drawbridge help`'; exit 1;
         fi
 
         APP_NAME=$2 # Base space for projects
-        VERSION_NAME=$3 # Upto 10 versions per App ID
+        VERSION_NAME=$3 # Up to 10 versions per App ID
         BYPASS_WARNING=$4
 
         if [ "$BYPASS_WARNING" != '--bypass' ]; then
@@ -219,13 +215,14 @@ case "$COMMAND" in
         echo "Building app.yaml for $VERSION_NAME"
         echo ''
 
-        cat "$PROJECT_DIR"/app.yaml.template | sed 's/__APP_NAME__/'"$APP_NAME"'/' | sed 's/__VERSION__/'"$VERSION_NAME"'/' > "$PROJECT_DIR"/app.yaml
+        cat "$PROJECT_DIR"/app.yaml.template > "$PROJECT_DIR"/app.yaml
 
         echo ''
         echo "Deploying $VERSION_NAME"
         echo ''
 
-        appcfg.py update $PROJECT_DIR
+        gcloud config set project "$APP_NAME"
+        gcloud app deploy "$PROJECT_DIR"/app.yaml --version="$VERSION_NAME"
 
         echo ''
         echo "Cleaning up"
