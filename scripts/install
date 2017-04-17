@@ -9,7 +9,7 @@ SCRIPTS_DIR=$PROJECT_DIR/scripts
 APP_DIR=$PROJECT_DIR/app
 COMMAND=/usr/local/bin/drawbridge
 
-dev_appserver.py -h >/dev/null 2>&1 || { echo >&2 "\nIt looks like the Google App Engine SDK isn't installed. You're going to need it: https://developers.google.com/appengine/downloads\n"; exit 1; }
+gcloud -h >/dev/null 2>&1 || { echo >&2 "\nIt looks like the Google App Engine SDK isn't installed. You're going to need it: https://developers.google.com/appengine/downloads\n"; exit 1; }
 
 echo ''
 echo 'Checking for existing install...'
