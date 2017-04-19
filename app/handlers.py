@@ -19,6 +19,7 @@ MIMETYPE_MAP = {
     'png': 'image/png',
     'html': 'text/html',
     'jpg': 'image/jpg',
+    'jpeg': 'image/jpg',
     'mp4': 'video/mp4',
     'webm': 'video/webm',
     'ogv': 'video/ogg',
@@ -26,6 +27,9 @@ MIMETYPE_MAP = {
     'obj': 'text/plain',
     'glsl': 'text/plain',
     'svg': 'image/svg+xml',
+    'mov': 'video/quicktime',
+    'mp3': 'audio/mpeg',
+    'json': 'application/json',
 }
 
 def get_release_name(request):
