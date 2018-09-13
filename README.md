@@ -25,6 +25,8 @@ Now manages all projects under a single GAE App ID. Each project is considered a
 ## Installing
 1. Clone repo
 1. Navigate to your newly cloned folder and run `sudo ./scripts/install`
+or
+1. Via curl with `curl -s https://raw.githubusercontent.com/leftfieldlabs/drawbridge/master/scripts/install | sh`
 
 ## Using and deploying
 1. Create a Google Cloud Platform (GCP) project, but don't create an AppEngine instance. Must be project owner to deploy.
