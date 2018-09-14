@@ -25,10 +25,16 @@ Now manages all projects under a single GAE App ID. Each project is considered a
 ## Installing
 1. Clone repo
 1. Navigate to your newly cloned folder and run `sudo ./scripts/install`
+or
+1. Via curl with `curl -s https://raw.githubusercontent.com/leftfieldlabs/drawbridge/master/scripts/install | sh`
 
 ## Using and deploying
+1. Create a Google Cloud Platform (GCP) project, but don't create an AppEngine instance. Must be project owner to deploy.
 1. From inside the directory with all your site assets, run `drawbridge deploy [app-id] [release]`
 1. Visit `[release]-dot-[app-id].appspot.com` to see your site
+
+## Whitelisting
+1. Head to `[release]-dot-[app-id].appspot.com/admin` with your GCP email and add users or organizations.
 
 ## Updating
 Run `drawbridge update` from anywhere to get latest vault code
